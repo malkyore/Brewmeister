@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FA2C01DC-B96E-46DC-B8BC-FF4F536342B4}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Brewcrosoft_Brewmeister</RootNamespace>
+    <AssemblyName>Brewcrosoft Brewmeister</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AWSSDK.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=885c28607f98e604, processorArchitecture=MSIL">
+      <HintPath>..\packages\AWSSDK.Core.3.3.0.3\lib\net45\AWSSDK.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="para-client-csharp, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\para_client_csharp.1.21.2\lib\net45\para-client-csharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net452\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Add Hop.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Add Hop.Designer.cs">
+      <DependentUpon>Add Hop.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Add Malt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Add Malt.Designer.cs">
+      <DependentUpon>Add Malt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddOtherIngredients.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOtherIngredients.Designer.cs">
+      <DependentUpon>AddOtherIngredients.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddYeast.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddYeast.Designer.cs">
+      <DependentUpon>AddYeast.cs</DependentUpon>
+    </Compile>
+    <Compile Include="API URL Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="API URL Settings.Designer.cs">
+      <DependentUpon>API URL Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FileLocationSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FileLocationSettings.Designer.cs">
+      <DependentUpon>FileLocationSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="New Beer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="New Beer.Designer.cs">
+      <DependentUpon>New Beer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Recipe Creator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Recipe Creator.Designer.cs">
+      <DependentUpon>Recipe Creator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View Recipes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View Recipes.Designer.cs">
+      <DependentUpon>View Recipes.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Add Hop.resx">
+      <DependentUpon>Add Hop.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Add Malt.resx">
+      <DependentUpon>Add Malt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddOtherIngredients.resx">
+      <DependentUpon>AddOtherIngredients.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddYeast.resx">
+      <DependentUpon>AddYeast.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="API URL Settings.resx">
+      <DependentUpon>API URL Settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FileLocationSettings.resx">
+      <DependentUpon>FileLocationSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="New Beer.resx">
+      <DependentUpon>New Beer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Recipe Creator.resx">
+      <DependentUpon>Recipe Creator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View Recipes.resx">
+      <DependentUpon>View Recipes.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="favicon.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

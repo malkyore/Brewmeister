@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Brewcrosoft_Brewmeister.Data;
 
 namespace Brewcrosoft_Brewmeister
 {
@@ -47,7 +48,7 @@ namespace Brewcrosoft_Brewmeister
         public List<String> OtherIngredientName = new List<String>();
         public List<float> OtherIngredientAmount = new List<float>();
         public List<String> OtherIngredientType = new List<String>();
-
+        recipe2 currentRecipe = new recipe2();
         //Statistical information
         public float PPGPoints = 0;
         public float SRM = 0;
@@ -68,10 +69,18 @@ namespace Brewcrosoft_Brewmeister
             
         }
 
-        public Recipe_Creator(String BeerName2, String BeerStyle2)
+        public Recipe_Creator(recipe2 currentRecipeFromMainScreen)
         {
+            APIHandler handler = new APIHandler();
+            List<fermentable2> fermentableList = handler.getFermentables();
+            DataGridViewComboBoxColumn maltColumn = new DataGridViewComboBoxColumn();
+            maltColumn.DataSource = fermentableList;
+            maltColumn.DisplayMember = "name";
+            maltColumn.ValueMember = "id";
+            currentRecipe = currentRecipeFromMainScreen;
            //Malt Grid Stuff
             InitializeComponent();
+            MaltGrid.Columns.Add(maltColumn);
             MaltGrid.Columns.Add("Name", "Name");
             MaltGrid.Columns.Add("Weight", "Weight");
             MaltGrid.Columns.Add("PPG", "PPG");
@@ -99,8 +108,6 @@ namespace Brewcrosoft_Brewmeister
             HopGrid.Columns[2].Width = 50;
             HopGrid.Columns[3].Width = 50;
             HopGrid.Columns[4].Width = 50;
-            BeerNameLabel.Text = BeerName2;
-            BeerStyleLabel.Text = BeerStyle2;
 
             //Yeast Grid Stuff
             YeastGrid.Columns.Add("Lab", "Lab");
@@ -117,11 +124,28 @@ namespace Brewcrosoft_Brewmeister
             OtherIngredientsGrid.Columns.Add("Amount", "Amount");
             OtherIngredientsGrid.Columns.Add("Type", "Type");
 
+            populateGrids();
+            RefreshStatistics();
         }
 
+        private void populateGrids()
+        {
+            //Populate Screen
+            BeerNameLabel.Text = currentRecipe.name;
+            BeerStyleLabel.Text = currentRecipe.style;
+            foreach (fermentablelist f in currentRecipe.fermentables)
+                MaltGrid.Rows.Add(f.fermentables[0].id, f.weight, f.fermentables[0].ppg, f.fermentables[0].color);
+            foreach (hoplist h in currentRecipe.hops)
+                HopGrid.Rows.Add(h.hop[0].name, h.type, h.amount, h.hop[0].aau, h.time);
+            foreach (yeastlist y in currentRecipe.yeasts)
+                YeastGrid.Rows.Add(y.yeast[0].lab, y.yeast[0].name, y.yeast[0].attenuation);
+            foreach (adjunctList a in currentRecipe.adjuncts)
+                OtherIngredientsGrid.Rows.Add(a.adjunct[0].name, a.amount, a.type);
+        }
 
         private void AddMaltButton_Click(object sender, EventArgs e)
         {
+            
             using (var maltDialog = new Add_Malt())
             {
                 var result = maltDialog.ShowDialog();
@@ -235,32 +259,30 @@ namespace Brewcrosoft_Brewmeister
             double Util = 0;
 
             int i = 0;
-            foreach (string element in MaltNameList)
+            foreach(fermentablelist f in currentRecipe.fermentables)
             {
-                PPGCalc += PPGList[i] * WeightList[i];
-                SRMCalc += (ColorList[i] * WeightList[i]);
-                i++;
+                PPGCalc += f.fermentables[0].ppg * f.weight;
+                SRMCalc += f.fermentables[0].color * f.weight;
             }
-            i = 0;
-            foreach (string element in HopNameList)
+
+            foreach (hoplist h in currentRecipe.hops)
             {
+                //Where the shit is CurrentOG Set at this point?!?
                 fG = 1.65 * (Math.Pow(0.000125, (CurrentOG - 1)));
-                fT = (1 - Math.Pow(Math.E,IBUBoilTimeCurveFit* HopTimeList[i]))/4.15;
+                fT = (1 - Math.Pow(Math.E, IBUBoilTimeCurveFit * h.time)) / 4.15;
                 Util = fG * fT;
-                IBUCalc += ((HopAmountList[i] * AAUList[i]) * Util * 74.89) / IntoFermenterVolume;
-                i++;
+                IBUCalc += ((h.amount * h.hop[0].aau) * Util * 74.89) / IntoFermenterVolume;
             }
-            i = 0;
 
             //Final Gravity Estimate based off of the average of the attenuations of the added yeasts
             int yeastCount = 0;
             float attenuationTotal = 0;
-            foreach (string element in YeastLabList)
+            foreach(yeastlist y in currentRecipe.yeasts)
             {
                 yeastCount += 1;
-                attenuationTotal += YeastAttenuationList[i];
-                i++;
+                attenuationTotal += y.yeast[0].attenuation;
             }
+
             float finalAttenuation = attenuationTotal / yeastCount;
             CurrentFG = 1 + (((CurrentOG - 1) * 1000) * ((100 - finalAttenuation) / 100)) / 1000;
 

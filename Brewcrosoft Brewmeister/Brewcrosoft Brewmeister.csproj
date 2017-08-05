@@ -100,17 +100,25 @@
     <Compile Include="API URL Settings.Designer.cs">
       <DependentUpon>API URL Settings.cs</DependentUpon>
     </Compile>
+    <Compile Include="APIHandler.cs" />
+    <Compile Include="BeerData.cs" />
     <Compile Include="FileLocationSettings.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FileLocationSettings.Designer.cs">
       <DependentUpon>FileLocationSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="Brewmeister.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Brewmeister.Designer.cs">
+      <DependentUpon>Brewmeister.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IngredientManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IngredientManager.Designer.cs">
+      <DependentUpon>IngredientManager.cs</DependentUpon>
     </Compile>
     <Compile Include="New Beer.cs">
       <SubType>Form</SubType>
@@ -150,8 +158,11 @@
     <EmbeddedResource Include="FileLocationSettings.resx">
       <DependentUpon>FileLocationSettings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Brewmeister.resx">
+      <DependentUpon>Brewmeister.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IngredientManager.resx">
+      <DependentUpon>IngredientManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="New Beer.resx">
       <DependentUpon>New Beer.cs</DependentUpon>

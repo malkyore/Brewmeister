@@ -117,6 +117,7 @@
             // 
             // YeastGrid
             // 
+            this.YeastGrid.AllowUserToAddRows = false;
             this.YeastGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.YeastGrid.Location = new System.Drawing.Point(7, 57);
             this.YeastGrid.Name = "YeastGrid";
@@ -157,11 +158,17 @@
             // 
             // MaltGrid
             // 
+            this.MaltGrid.AllowUserToAddRows = false;
             this.MaltGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.MaltGrid.Location = new System.Drawing.Point(7, 60);
             this.MaltGrid.Name = "MaltGrid";
+            this.MaltGrid.RowHeadersVisible = false;
+            this.MaltGrid.ShowEditingIcon = false;
             this.MaltGrid.Size = new System.Drawing.Size(394, 462);
             this.MaltGrid.TabIndex = 0;
+            this.MaltGrid.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.MaltGrid_CellLeave);
+            this.MaltGrid.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.HopGrid_CellLeave);
+            this.MaltGrid.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.HopGrid_CellLeave);
             this.MaltGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellValueChanged);
             // 
             // HopGroup
@@ -198,11 +205,17 @@
             // 
             // HopGrid
             // 
+            this.HopGrid.AllowUserToAddRows = false;
             this.HopGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.HopGrid.Location = new System.Drawing.Point(6, 60);
             this.HopGrid.Name = "HopGrid";
+            this.HopGrid.RowHeadersVisible = false;
+            this.HopGrid.ShowEditingIcon = false;
             this.HopGrid.Size = new System.Drawing.Size(444, 462);
             this.HopGrid.TabIndex = 1;
+            this.HopGrid.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.HopGrid_CellLeave);
+            this.HopGrid.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.HopGrid_CellLeave);
+            this.HopGrid.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.HopGrid_CellLeave);
             // 
             // RecipeStatsBox
             // 
@@ -393,6 +406,7 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -485,6 +499,7 @@
             // 
             // OtherIngredientsGrid
             // 
+            this.OtherIngredientsGrid.AllowUserToAddRows = false;
             this.OtherIngredientsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.OtherIngredientsGrid.Location = new System.Drawing.Point(7, 57);
             this.OtherIngredientsGrid.Name = "OtherIngredientsGrid";

@@ -23,7 +23,20 @@ namespace Brewcrosoft_Brewmeister
             dataurl = (string)adsfa.GetValue("dataurl");
             //hopGrid.Columns.Add("Name","Name");
             //hopGrid.Columns.Add("AAU","AAU");
+
+            maltTypeBox.Items.Add("Adjunct");
+            maltTypeBox.Items.Add("Base Malt");
+            maltTypeBox.Items.Add("Caramel/Crystal");
+            maltTypeBox.Items.Add("Dry Extract");
+            maltTypeBox.Items.Add("Grain");
+            maltTypeBox.Items.Add("Kilned Malt");
+            maltTypeBox.Items.Add("Liquid Extract");
+            maltTypeBox.Items.Add("Mash");
+            maltTypeBox.Items.Add("Roasted Malt");
+            maltTypeBox.Items.Add("Sugar");
+
             refreshGrids();
+
         }
 
         private void refreshGrids()
@@ -152,14 +165,16 @@ namespace Brewcrosoft_Brewmeister
                 CellTemplate = cell,
                 Name = "lab",
                 HeaderText = "Lab",
-                DataPropertyName = "lab"
+                DataPropertyName = "lab",
+                Width = 70
             };
             DataGridViewTextBoxColumn colYeastAttenuation = new DataGridViewTextBoxColumn()
             {
                 CellTemplate = cell,
                 Name = "attenuation",
                 HeaderText = "Attenuation",
-                DataPropertyName = "attenuation"
+                DataPropertyName = "attenuation",
+                Width = 90
             };
             DataGridViewTextBoxColumn colYeastID = new DataGridViewTextBoxColumn()
             {
@@ -299,6 +314,16 @@ namespace Brewcrosoft_Brewmeister
 
             IRestResponse response = client.Execute(request);
             refreshGrids();
+        }
+
+        private void refreshButton_Click(object sender, EventArgs e)
+        {
+            refreshGrids();
+        }
+
+        private void maltTypeBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -1,39 +1,30 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Brewcrosoft_Brewmeister.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Brewcrosoft_Brewmeister.Data;
 
 namespace Brewcrosoft_Brewmeister
 {
-    public partial class View_Recipes : Form
+    public partial class GetMalts : Form
     {
         public string currentSelectedRecipe { get { return selectedKey; } }
         public string dataurl;
-        List<loadedRecipe> recipeList = new List<loadedRecipe>();
+        List<fermentable2> recipeList = new List<fermentable2>();
         public String selectedKey;
-        public View_Recipes()
+        public GetMalts()
         {
             InitializeComponent();
             RecipeGrid.Columns.Add("Name", "Name");
-            RecipeGrid.Columns.Add("Style", "Style");
-            RecipeGrid.Columns.Add("Description", "Description");
-            RecipeGrid.Columns.Add("ABV", "ABV");
-            RecipeGrid.Columns.Add("IBU", "IBU");
-        }
-
-        private void loadRecipesOnFormLoad(object sender, EventArgs e)
-        {
-            APIHandler handler = new APIHandler();
-            string jsonurl = dataurl + "/recipe";
-            recipeList = handler.loadRecipes(jsonurl);
+            RecipeGrid.Columns.Add("PPG", "PPG");
+            RecipeGrid.Columns.Add("Color", "Color");
+            RecipeGrid.Columns.Add("Type", "Type");
+            RecipeGrid.Columns.Add("Maltster", "Maltster");
             populateGrid();
         }
 
@@ -45,13 +36,22 @@ namespace Brewcrosoft_Brewmeister
             populateGrid();
         }
 
+        private void loadRecipesOnFormLoad(object sender, EventArgs e)
+        {
+            APIHandler handler = new APIHandler();
+            string jsonurl = dataurl + "/fermentables";
+            recipeList = handler.getFermentables();
+            populateGrid();
+        }
+
+
         private void populateGrid()
         {
             RecipeGrid.Rows.Clear();
             int i = 0;
-            foreach (loadedRecipe element in recipeList)
+            foreach (fermentable2 element in recipeList)
             {
-                RecipeGrid.Rows.Add(recipeList[i].name, recipeList[i].style, recipeList[i].description, recipeList[i].abv, recipeList[i].ibu);
+                RecipeGrid.Rows.Add(recipeList[i].name, recipeList[i].ppg, recipeList[i].color, recipeList[i].type, recipeList[i].maltster);
                 i++;
             }
         }
@@ -60,16 +60,17 @@ namespace Brewcrosoft_Brewmeister
         {
             try
             {
-                selectedKey = recipeList[RecipeGrid.CurrentRow.Index].key;
+                selectedKey = recipeList[RecipeGrid.CurrentRow.Index].id;
             }
             catch (Exception ed)
             {
 
             }
         }
-
         private void SelectButton_Click(object sender, EventArgs e)
         {
+            selectedKey = recipeList[RecipeGrid.CurrentCell.RowIndex].id;
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
@@ -78,7 +79,4 @@ namespace Brewcrosoft_Brewmeister
 
         }
     }
-
-
-    
 }

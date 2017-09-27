@@ -12,7 +12,7 @@ using Brewcrosoft_Brewmeister.Data;
 
 namespace Brewcrosoft_Brewmeister
 {
-    
+    #region Shared Stuff
     public partial class Recipe_Creator : Form
     {
         public string BeerName { get; set; }
@@ -69,6 +69,9 @@ namespace Brewcrosoft_Brewmeister
             
         }
 
+        /*
+         * Sets all the fucking shit for the grids and shit.
+         * */
         public Recipe_Creator(recipe2 currentRecipeFromMainScreen)
         {
             APIHandler handler = new APIHandler();
@@ -80,12 +83,16 @@ namespace Brewcrosoft_Brewmeister
             currentRecipe = currentRecipeFromMainScreen;
            //Malt Grid Stuff
             InitializeComponent();
-            MaltGrid.Columns.Add(maltColumn);
+            //MaltGrid.Columns.Add(maltColumn);
             MaltGrid.Columns.Add("Name", "Name");
+            MaltGrid.Columns[0].ReadOnly = true;
             MaltGrid.Columns.Add("Weight", "Weight");
             MaltGrid.Columns.Add("PPG", "PPG");
+            MaltGrid.Columns[2].ReadOnly = true;
             MaltGrid.Columns.Add("Color", "Color");
+            MaltGrid.Columns[3].ReadOnly = true;
             DataGridViewCheckBoxColumn ExtractColumn = new DataGridViewCheckBoxColumn();
+            ExtractColumn.ReadOnly = true;
             ExtractColumn.Name = "Extract";
             ExtractColumn.HeaderText = "Extract";
             MaltGrid.Columns.Add(ExtractColumn);
@@ -99,9 +106,18 @@ namespace Brewcrosoft_Brewmeister
 
             //Hop Grid Stuff
             HopGrid.Columns.Add("Name", "Name");
-            HopGrid.Columns.Add("Type", "Type");
+            HopGrid.Columns[0].ReadOnly = true;
+            DataGridViewComboBoxColumn typeColumn = new DataGridViewComboBoxColumn();
+            typeColumn.Name = "Type";
+            typeColumn.Items.Add("Boil");
+            typeColumn.Items.Add("Dry Hop");
+            typeColumn.Items.Add("Whirlpool");
+            typeColumn.DisplayStyle = DataGridViewComboBoxDisplayStyle.ComboBox;
+            HopGrid.Columns.Add(typeColumn);
+            //HopGrid.Columns.Add("Type", "Type");
             HopGrid.Columns.Add("Amount", "Amount");
             HopGrid.Columns.Add("AAU", "AAU");
+            HopGrid.Columns[3].ReadOnly = true;
             HopGrid.Columns.Add("Time", "Time");
             HopGrid.Columns[0].Width = 150;
             HopGrid.Columns[1].Width = 100;
@@ -128,125 +144,80 @@ namespace Brewcrosoft_Brewmeister
             RefreshStatistics();
         }
 
+        /*
+         * Repopulates the grids from the current recipe object.
+         * */
         private void populateGrids()
         {
+            MaltGrid.Rows.Clear();
+            HopGrid.Rows.Clear();
+            YeastGrid.Rows.Clear();
+            OtherIngredientsGrid.Rows.Clear();
             //Populate Screen
             BeerNameLabel.Text = currentRecipe.name;
             BeerStyleLabel.Text = currentRecipe.style;
             foreach (fermentablelist f in currentRecipe.fermentables)
-                MaltGrid.Rows.Add(f.fermentables[0].id, f.weight, f.fermentables[0].ppg, f.fermentables[0].color);
-            foreach (hoplist h in currentRecipe.hops)
-                HopGrid.Rows.Add(h.hop[0].name, h.type, h.amount, h.hop[0].aau, h.time);
-            foreach (yeastlist y in currentRecipe.yeasts)
-                YeastGrid.Rows.Add(y.yeast[0].lab, y.yeast[0].name, y.yeast[0].attenuation);
-            foreach (adjunctList a in currentRecipe.adjuncts)
-                OtherIngredientsGrid.Rows.Add(a.adjunct[0].name, a.amount, a.type);
-        }
-
-        private void AddMaltButton_Click(object sender, EventArgs e)
-        {
-            
-            using (var maltDialog = new Add_Malt())
             {
-                var result = maltDialog.ShowDialog();
-                if(result == DialogResult.OK)
+                bool extract = false;
+                if (f.fermentable.type == "Liquid Extract" || f.fermentable.type == "Dry Extract")
                 {
-                    Boolean extractstate = false;
-                    String MaltName = maltDialog.MaltName;
-                    float Weight = maltDialog.Weight;
-                    float BeerColor = maltDialog.MaltColor;
-                    float PPG = maltDialog.PPG;
-                    String Extract = maltDialog.Extract;
-                    if (Extract == "Checked")
-                    {
-                        extractstate = true;
-                    }
-                    MaltNameList.Add(MaltName);
-                    WeightList.Add(Weight);
-                    PPGList.Add(Convert.ToInt32(PPG));
-                    ColorList.Add(Convert.ToInt32(BeerColor));
-                    ExtractList.Add(extractstate);
-                    PopulateMaltList();
-                    RefreshStatistics();
+                    extract = true;
                 }
+                MaltGrid.Rows.Add(f.fermentable.name, f.weight, f.fermentable.ppg, f.fermentable.color,extract);
                 
             }
-            
-            
+            foreach (hoplist h in currentRecipe.hops)
+                HopGrid.Rows.Add(h.hop.name, h.type, h.amount, h.hop.aau, h.time);
+            foreach (yeastlist y in currentRecipe.yeasts)
+                YeastGrid.Rows.Add(y.yeast.lab, y.yeast.name, y.yeast.attenuation);
+            foreach (adjunctList a in currentRecipe.adjuncts)
+                OtherIngredientsGrid.Rows.Add(a.adjunct.name, a.amount, a.type);
         }
 
-        private void AddHopsButton_Click(object sender, EventArgs e)
+        /*
+         * copies changes out of the grid into the current 
+         * recipe object.
+         * */
+        private void BackPopulateRecipeFromGridChange()
         {
-            using (var HopDialog = new Add_Hop())
+            for (int i = 0; i < HopGrid.RowCount - 1; i++)
             {
-                var result = HopDialog.ShowDialog();
-                if (result == DialogResult.OK)
+                if (currentRecipe.hops.Count > i)
                 {
-                    String HopName = HopDialog.HopName;
-                    float Amount = HopDialog.Amount;
-                    float AAU = HopDialog.AAU;
-                    float HopTime = HopDialog.Time;
-                    String HopType = HopDialog.HopType;
-                    HopNameList.Add(HopName);
-                    HopAmountList.Add(Amount);
-                    AAUList.Add(AAU);
-                    HopTimeList.Add(HopTime);
-                    HopTypeList.Add(HopType);
-                    PopulateHopList();
-                    RefreshStatistics();
+                    if (HopGrid[1, i].Value != null && HopGrid.RowCount > 0)
+                        currentRecipe.hops[i].type = HopGrid[1, i].Value.ToString();
+                    float.TryParse(HopGrid[2, i].Value.ToString(), out currentRecipe.hops[i].amount);
+                    float.TryParse(HopGrid[4, i].Value.ToString(), out currentRecipe.hops[i].time);
                 }
+
             }
-        }
 
-        private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-                MaltNameList[e.RowIndex] = (string)MaltGrid[0, e.RowIndex].Value;
-                WeightList[e.RowIndex] = float.Parse(MaltGrid[1, e.RowIndex].Value.ToString());
-                PPGList[e.RowIndex] = float.Parse(MaltGrid[2, e.RowIndex].Value.ToString());
-                ColorList[e.RowIndex] = float.Parse(MaltGrid[3, e.RowIndex].Value.ToString());
-                ExtractList[e.RowIndex] = (Boolean)MaltGrid[4, e.RowIndex].Value;
-
-                PopulateMaltList();
-                RefreshStatistics();
-
-        }
-
-        public void PopulateMaltList()
-        {
-            MaltGrid.Rows.Clear();
-            int i = 0;
-            foreach(string element in MaltNameList)
+            /*
+             * My dearest me of the future...
+             * 
+             * If you would be so kind as to set the correct fermentableID inside of the Ferbemtables object
+             * for items added via the add fermentables window that would be awesome.
+             * 
+             * FermentableadditionID's will be added when they are added to the API and returned via that method.
+             * 
+             * 
+             * thaaaaannnks.  *bitch*
+             * */
+            for (int i = 0; i < MaltGrid.RowCount - 1; i++)
             {
-                MaltGrid.Rows.Add(MaltNameList[i], WeightList[i], PPGList[i], ColorList[i], ExtractList[i]);
-                i++;
+                if (currentRecipe.fermentables.Count > i)
+                {
+                   float.TryParse(MaltGrid[1, i].Value.ToString(), out currentRecipe.fermentables[i].weight);
+                }
+           
             }
-
         }
 
-        public void PopulateHopList()
-        {
-            HopGrid.Rows.Clear();
-            int i = 0;
-            foreach (string element in HopNameList)
-            {
-                HopGrid.Rows.Add(HopNameList[i], HopTypeList[i], HopAmountList[i], AAUList[i], HopTimeList[i]);
-                i++;
-            }
-
-        }
-
-        public void PopulateYeastList()
-        {
-            YeastGrid.Rows.Clear();
-            int i = 0;
-            foreach (string element in YeastLabList)
-            {
-                YeastGrid.Rows.Add(YeastLabList[i], YeastProductList[i], YeastAttenuationList[i]);
-                i++;
-            }
-
-        }
-
+        /*
+    * Does all the math for the beer info.
+    * 
+    * This should at some point be moved to a thing so it can be used elsewhere.
+    * */
         public void RefreshStatistics()
         {
             double PPGCalc = 0;
@@ -259,28 +230,31 @@ namespace Brewcrosoft_Brewmeister
             double Util = 0;
 
             int i = 0;
-            foreach(fermentablelist f in currentRecipe.fermentables)
+            foreach (fermentablelist f in currentRecipe.fermentables)
             {
-                PPGCalc += f.fermentables[0].ppg * f.weight;
-                SRMCalc += f.fermentables[0].color * f.weight;
+                PPGCalc += f.fermentable.ppg * f.weight;
+                SRMCalc += f.fermentable.color * f.weight;
             }
 
             foreach (hoplist h in currentRecipe.hops)
             {
-                //Where the shit is CurrentOG Set at this point?!?
-                fG = 1.65 * (Math.Pow(0.000125, (CurrentOG - 1)));
-                fT = (1 - Math.Pow(Math.E, IBUBoilTimeCurveFit * h.time)) / 4.15;
-                Util = fG * fT;
-                IBUCalc += ((h.amount * h.hop[0].aau) * Util * 74.89) / IntoFermenterVolume;
+                if (h.type == "Boil")
+                {
+                    //Where the shit is CurrentOG Set at this point?!?
+                    fG = 1.65 * (Math.Pow(0.000125, (CurrentOG - 1)));
+                    fT = (1 - Math.Pow(Math.E, IBUBoilTimeCurveFit * h.time)) / 4.15;
+                    Util = fG * fT;
+                    IBUCalc += ((h.amount * h.hop.aau) * Util * 74.89) / IntoFermenterVolume;
+                }
             }
 
             //Final Gravity Estimate based off of the average of the attenuations of the added yeasts
             int yeastCount = 0;
             float attenuationTotal = 0;
-            foreach(yeastlist y in currentRecipe.yeasts)
+            foreach (yeastlist y in currentRecipe.yeasts)
             {
                 yeastCount += 1;
-                attenuationTotal += y.yeast[0].attenuation;
+                attenuationTotal += y.yeast.attenuation;
             }
 
             float finalAttenuation = attenuationTotal / yeastCount;
@@ -288,7 +262,7 @@ namespace Brewcrosoft_Brewmeister
 
             //calculate ABV
             CurrentABV = (CurrentOG - CurrentFG) * 131.25;
-            if(CurrentABV > 10)
+            if (CurrentABV > 10)
             {
                 CurrentABV = (76.08 * (CurrentOG - CurrentFG) / (1.775 - CurrentOG)) * (CurrentFG / 0.794);
             }
@@ -296,7 +270,7 @@ namespace Brewcrosoft_Brewmeister
             //update the statistics box
             RawPPGLabel.Text = "" + PPGCalc;
             PPGCalc = PPGCalc * KitEfficiency;
-            SRMCalc = 1.4922 * (Math.Pow(SRMCalc/IntoFermenterVolume, 0.69)); 
+            SRMCalc = 1.4922 * (Math.Pow(SRMCalc / IntoFermenterVolume, 0.69));
             GravityPointsLabel.Text = "" + PPGCalc;
             CurrentOG = (1 + (PPGCalc / IntoFermenterVolume) / 1000);
 
@@ -310,58 +284,10 @@ namespace Brewcrosoft_Brewmeister
             IntoFermenterVolumeBox.Text = "" + IntoFermenterVolume;
         }
 
-        private void RemoveHopsButton_Click(object sender, EventArgs e)
-        {
-            HopNameList.RemoveAt(HopGrid.CurrentRow.Index);
-            HopAmountList.RemoveAt(HopGrid.CurrentRow.Index);
-            AAUList.RemoveAt(HopGrid.CurrentRow.Index);
-            HopTimeList.RemoveAt(HopGrid.CurrentRow.Index);
-            HopGrid.Rows.RemoveAt(HopGrid.CurrentRow.Index);
-            PopulateHopList();
-            RefreshStatistics();
-        }
-
-        private void RemoveMaltButton_Click(object sender, EventArgs e)
-        {
-            MaltNameList.RemoveAt(MaltGrid.CurrentRow.Index);
-            WeightList.RemoveAt(MaltGrid.CurrentRow.Index);
-            PPGList.RemoveAt(MaltGrid.CurrentRow.Index);
-            ColorList.RemoveAt(MaltGrid.CurrentRow.Index);
-            ExtractList.RemoveAt(MaltGrid.CurrentRow.Index);
-            PopulateMaltList();
-            RefreshStatistics();
-        }
-
-        private void AddYeastButton_Click(object sender, EventArgs e)
-        {
-            using (var YeastDialog = new AddYeast())
-            {
-                var result = YeastDialog.ShowDialog();
-                if (result == DialogResult.OK)
-                {
-                    String lab = YeastDialog.Lab;
-                  //  String flocculation = YeastDialog.Flocculation;
-                  //  String alcoholTolerance = YeastDialog.AlcoholTolerance;
-                    String product = YeastDialog.Product;
-                 //   String type = YeastDialog.YeastType;
-                    float attenuation = YeastDialog.Attenuation;
-                   // float tempRangeStart = YeastDialog.TempRangeStart;
-                   // float tempRangeEnd = YeastDialog.TempRangeEnd;
-                    YeastLabList.Add(lab);
-                    YeastProductList.Add(product);
-                    //YeastAlcoholToleranceList.Add(alcoholTolerance);
-                    YeastAttenuationList.Add(attenuation);
-                   // YeastTypeList.Add(type);
-                    //YeastTempRangeStartList.Add(tempRangeStart);
-                    //YeastTempRangeEndList.Add(tempRangeEnd);
-                    //YeastFlocculationList.Add(flocculation);
-                   
-                    PopulateYeastList();
-                    RefreshStatistics();
-                }
-            }
-        }
-
+        /*
+       * IDK.... this might still work.  It recalculates the information based
+       * on changes to the into-fermenter volume.
+       * */
         private void ChangeIntoFermenterVolume(object sender, EventArgs e)
         {
             if (IntoFermenterVolumeBox.Text != "")
@@ -379,6 +305,10 @@ namespace Brewcrosoft_Brewmeister
                 RefreshStatistics();
             }
         }
+
+        /*
+         * This also might still work.  It updates the shit based on changes in the kit efficency.
+         * */
         private void ChangeKitEfficiency(object sender, EventArgs e)
         {
             if (KitEfficiencyBox.Text != "")
@@ -397,20 +327,9 @@ namespace Brewcrosoft_Brewmeister
             }
         }
 
-        private void RemoveYeastButton_Click(object sender, EventArgs e)
-        {
-            YeastLabList.RemoveAt(MaltGrid.CurrentRow.Index);
-            YeastProductList.RemoveAt(MaltGrid.CurrentRow.Index);
-            YeastAlcoholToleranceList.RemoveAt(MaltGrid.CurrentRow.Index);
-            YeastAttenuationList.RemoveAt(MaltGrid.CurrentRow.Index);
-            YeastTypeList.RemoveAt(MaltGrid.CurrentRow.Index);
-            YeastTempRangeStartList.RemoveAt(MaltGrid.CurrentRow.Index);
-            YeastTempRangeEndList.RemoveAt(MaltGrid.CurrentRow.Index);
-            YeastFlocculationList.RemoveAt(MaltGrid.CurrentRow.Index);
-            PopulateMaltList();
-            RefreshStatistics();
-        }
-
+        /*
+         * The shittiest oldest least-working code I've ever saw.
+         * */
         private void SaveButton_Click(object sender, EventArgs e)
         {
             List<String> LinesList = new List<String>();
@@ -431,7 +350,7 @@ namespace Brewcrosoft_Brewmeister
             TempLine = "MALTS";
             LinesList.Add(TempLine);
             int i = 0;
-            foreach(string maltname in MaltNameList)
+            foreach (string maltname in MaltNameList)
             {
                 TempLine = MaltNameList[i] + "\t" + WeightList[i] + "\t" + PPGList[i] + "\t" + ColorList[i] + "\t" + ExtractList[i];
                 i++;
@@ -442,7 +361,7 @@ namespace Brewcrosoft_Brewmeister
             TempLine = "HOPS";
             LinesList.Add(TempLine);
             i = 0;
-            foreach(string hopname in HopNameList)
+            foreach (string hopname in HopNameList)
             {
                 TempLine = HopNameList[i] + "\t" + HopAmountList[i] + "\t" + AAUList[i] + "\t" + HopTimeList[i] + "\t" + HopTypeList[i];
                 i++;
@@ -480,7 +399,7 @@ namespace Brewcrosoft_Brewmeister
             {
                 foreach (string line in LinesList)
                 {
-                        file.WriteLine(line);
+                    file.WriteLine(line);
                 }
             }
             RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister", true);
@@ -499,6 +418,253 @@ namespace Brewcrosoft_Brewmeister
 
         }
 
+        #endregion
+
+        #region Hop Stuff
+        /*
+         * Opens the new add hops dialog.
+         * */
+        private void AddHopsButton_Click(object sender, EventArgs e)
+        {
+            BackPopulateRecipeFromGridChange();
+
+            using (var HopDialog = new GetHops())
+            {
+                var result = HopDialog.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    LoadHop(HopDialog.selectedKey);
+                    populateGrids();
+                }
+            }
+        }
+
+        /*
+         * Interfaces with the data access layer to load a single hops information out of the API
+         * */
+        private void LoadHop(string selectedHop)
+        {
+            APIHandler handler = new APIHandler();
+            hoplist add = new hoplist();
+            add.hopID = selectedHop;
+            add.hop = handler.getHop(selectedHop);
+            add.recipeID = currentRecipe.id;
+            currentRecipe.hops.Add(add);
+           // currentRecipe.hops.Add()
+        }
+
+        /*Populates the hop list
+         * */
+        public void PopulateHopList()
+        {
+            HopGrid.Rows.Clear();
+            int i = 0;
+            foreach (string element in HopNameList)
+            {
+                HopGrid.Rows.Add(HopNameList[i], HopTypeList[i], HopAmountList[i], AAUList[i], HopTimeList[i]);
+                i++;
+            }
+
+        }
+
+        /*
+         * Deletes a hop from the recipe.
+         * */
+        private void RemoveHopsButton_Click(object sender, EventArgs e)
+        {
+
+            currentRecipe.hops.RemoveAt(HopGrid.CurrentRow.Index);
+            PopulateHopList();
+            RefreshStatistics();
+        }
+
+        /*
+         * recalculates the math stuff when you change cells on the hop grid.
+         * */
+        private void HopGrid_CellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            BackPopulateRecipeFromGridChange();
+            //  PopulateHopList();
+            RefreshStatistics();
+        }
+        #endregion
+
+        #region Malt Stuff
+        /*
+        * A Shitty attempt to get a combo box thing for picking malts but it fucking sucked and 
+        * I hated it.
+        * */
+        private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+          //  if (e.ColumnIndex == 0)
+          //  {
+          //      if (e.RowIndex < MaltNameList.Count)
+          //      {
+          //          MaltNameList[e.RowIndex] = (string)MaltGrid[0, e.RowIndex].Value;
+          //          WeightList[e.RowIndex] = float.Parse(MaltGrid[1, e.RowIndex].Value.ToString());
+          //          PPGList[e.RowIndex] = float.Parse(MaltGrid[2, e.RowIndex].Value.ToString());
+          //          ColorList[e.RowIndex] = float.Parse(MaltGrid[3, e.RowIndex].Value.ToString());
+          //          ExtractList[e.RowIndex] = (Boolean)MaltGrid[4, e.RowIndex].Value;
+          //
+          //      } else
+          //      {
+          //          MaltNameList.Add((string)MaltGrid[0, e.RowIndex].Value);
+          //          WeightList.Add(float.Parse(MaltGrid[1, e.RowIndex].Value.ToString()));
+          //          PPGList.Add(float.Parse(MaltGrid[2, e.RowIndex].Value.ToString()));
+          //          ColorList.Add(float.Parse(MaltGrid[3, e.RowIndex].Value.ToString()));
+          //          ExtractList.Add((Boolean)MaltGrid[4, e.RowIndex].Value);
+          //      }
+          //     // PopulateMaltList();
+          //      RefreshStatistics();
+          //  }
+        }
+
+        /*
+ * Ancient shitty shit that doesn't work.
+ * */
+        private void AddMaltButton_Click(object sender, EventArgs e)
+        {
+            BackPopulateRecipeFromGridChange();
+
+            using (var MaltDialog = new GetMalts())
+            {
+                var result = MaltDialog.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    LoadMalt(MaltDialog.selectedKey);
+                    populateGrids();
+                }
+            }
+        
+
+            }
+
+        /*
+         * Interfaces with the data access layer to load a single hops information out of the API
+         * */
+        private void LoadMalt(string selectedMalt)
+        {
+            APIHandler handler = new APIHandler();
+            fermentablelist add = new fermentablelist();
+            add.id = selectedMalt;
+            add.fermentable = handler.getFermentable(selectedMalt);
+            add.recipeID = currentRecipe.id;
+            currentRecipe.fermentables.Add(add);
+            // currentRecipe.hops.Add()
+        }
+
+        private void MaltGrid_CellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            BackPopulateRecipeFromGridChange();
+            //  PopulateHopList();
+            RefreshStatistics();
+        }
+
+        /*
+         * populates the malt list...
+         * */
+        public void PopulateMaltList()
+        {
+            MaltGrid.Rows.Clear();
+            int i = 0;
+            foreach(string element in MaltNameList)
+            {
+                MaltGrid.Rows.Add(MaltNameList[i], WeightList[i], PPGList[i], ColorList[i], ExtractList[i]);
+                i++;
+            }
+
+        }
+
+
+        /*
+         * Old broken malt removal code.
+         * */
+        private void RemoveMaltButton_Click(object sender, EventArgs e)
+        {
+            MaltNameList.RemoveAt(MaltGrid.CurrentRow.Index);
+            WeightList.RemoveAt(MaltGrid.CurrentRow.Index);
+            PPGList.RemoveAt(MaltGrid.CurrentRow.Index);
+            ColorList.RemoveAt(MaltGrid.CurrentRow.Index);
+            ExtractList.RemoveAt(MaltGrid.CurrentRow.Index);
+            PopulateMaltList();
+            RefreshStatistics();
+        }
+
+        #endregion
+
+        #region Yeast Stuff
+        /*
+         * populates the yeast list.
+         * */
+        public void PopulateYeastList()
+        {
+            YeastGrid.Rows.Clear();
+            int i = 0;
+            foreach (string element in YeastLabList)
+            {
+                YeastGrid.Rows.Add(YeastLabList[i], YeastProductList[i], YeastAttenuationList[i]);
+                i++;
+            }
+
+        }
+
+
+        /*
+         * Old broken remove yeast code.
+         * */
+        private void RemoveYeastButton_Click(object sender, EventArgs e)
+        {
+            YeastLabList.RemoveAt(MaltGrid.CurrentRow.Index);
+            YeastProductList.RemoveAt(MaltGrid.CurrentRow.Index);
+            YeastAlcoholToleranceList.RemoveAt(MaltGrid.CurrentRow.Index);
+            YeastAttenuationList.RemoveAt(MaltGrid.CurrentRow.Index);
+            YeastTypeList.RemoveAt(MaltGrid.CurrentRow.Index);
+            YeastTempRangeStartList.RemoveAt(MaltGrid.CurrentRow.Index);
+            YeastTempRangeEndList.RemoveAt(MaltGrid.CurrentRow.Index);
+            YeastFlocculationList.RemoveAt(MaltGrid.CurrentRow.Index);
+            PopulateMaltList();
+            RefreshStatistics();
+        }
+
+        /*
+        * Old broken add yeast code.
+        * */
+        private void AddYeastButton_Click(object sender, EventArgs e)
+        {
+            using (var YeastDialog = new AddYeast())
+            {
+                var result = YeastDialog.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    String lab = YeastDialog.Lab;
+                    //  String flocculation = YeastDialog.Flocculation;
+                    //  String alcoholTolerance = YeastDialog.AlcoholTolerance;
+                    String product = YeastDialog.Product;
+                    //   String type = YeastDialog.YeastType;
+                    float attenuation = YeastDialog.Attenuation;
+                    // float tempRangeStart = YeastDialog.TempRangeStart;
+                    // float tempRangeEnd = YeastDialog.TempRangeEnd;
+                    YeastLabList.Add(lab);
+                    YeastProductList.Add(product);
+                    //YeastAlcoholToleranceList.Add(alcoholTolerance);
+                    YeastAttenuationList.Add(attenuation);
+                    // YeastTypeList.Add(type);
+                    //YeastTempRangeStartList.Add(tempRangeStart);
+                    //YeastTempRangeEndList.Add(tempRangeEnd);
+                    //YeastFlocculationList.Add(flocculation);
+
+                    PopulateYeastList();
+                    RefreshStatistics();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Adjuncts Stuff
+        /*
+         * old stuff for the adjunct grid.
+         * */
         private void AddOtherIngredientsButton_Click(object sender, EventArgs e)
         {
             using (var OtherDialog = new AddOtherIngredients())
@@ -520,6 +686,9 @@ namespace Brewcrosoft_Brewmeister
             }
         }
 
+        /*
+         * populates the adjuncts grid.
+         * */
         public void PopulateOtherList()
         {
             OtherIngredientsGrid.Rows.Clear();
@@ -532,6 +701,8 @@ namespace Brewcrosoft_Brewmeister
 
         }
 
+        #endregion
+        
     }
 }
 

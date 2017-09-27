@@ -80,6 +80,28 @@ namespace Brewcrosoft_Brewmeister
             return hopList;
         }
 
+        public hop2 getHop(string hopID)
+        {
+            RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister");
+            string dataurl = (string)adsfa.GetValue("dataurl");
+            string jsonurl = dataurl + "/hop?id=" + hopID;
+            hop2 returnable = new hop2();
+            var json = new WebClient().DownloadString(jsonurl);
+            returnable = JsonConvert.DeserializeObject<hop2>(json);
+            return returnable;
+        }
+
+        public fermentable2 getFermentable(string fermentableID)
+        {
+            RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister");
+            string dataurl = (string)adsfa.GetValue("dataurl");
+            string jsonurl = dataurl + "/fermentables?id=" + fermentableID;
+            fermentable2 returnable = new fermentable2();
+            var json = new WebClient().DownloadString(jsonurl);
+            returnable = JsonConvert.DeserializeObject<fermentable2>(json);
+            return returnable;
+        }
+
         public List<yeast2> getYeasts()
         {
             RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister");

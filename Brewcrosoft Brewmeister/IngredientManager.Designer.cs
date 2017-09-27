@@ -60,6 +60,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.yeastAttenuationBox = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.refreshButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.hopGrid)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.maltGrid)).BeginInit();
@@ -73,7 +74,7 @@
             this.addHopButton.Location = new System.Drawing.Point(346, 372);
             this.addHopButton.Name = "addHopButton";
             this.addHopButton.Size = new System.Drawing.Size(244, 31);
-            this.addHopButton.TabIndex = 0;
+            this.addHopButton.TabIndex = 15;
             this.addHopButton.Text = "Add Hop";
             this.addHopButton.UseVisualStyleBackColor = true;
             this.addHopButton.Click += new System.EventHandler(this.addHopButton_Click);
@@ -115,7 +116,7 @@
             this.postaaubox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.postaaubox.Name = "postaaubox";
             this.postaaubox.Size = new System.Drawing.Size(244, 26);
-            this.postaaubox.TabIndex = 12;
+            this.postaaubox.TabIndex = 14;
             this.postaaubox.TextChanged += new System.EventHandler(this.postaaubox_TextChanged);
             // 
             // hopGrid
@@ -138,7 +139,7 @@
             this.groupBox1.Controls.Add(this.postaaubox);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.postnamebox);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(764, 483);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(602, 465);
             this.groupBox1.TabIndex = 17;
@@ -150,7 +151,7 @@
             this.deleteHopButton.Location = new System.Drawing.Point(347, 423);
             this.deleteHopButton.Name = "deleteHopButton";
             this.deleteHopButton.Size = new System.Drawing.Size(244, 29);
-            this.deleteHopButton.TabIndex = 17;
+            this.deleteHopButton.TabIndex = 16;
             this.deleteHopButton.Text = "Delete Hop";
             this.deleteHopButton.UseVisualStyleBackColor = true;
             this.deleteHopButton.Click += new System.EventHandler(this.deleteHopButton_Click);
@@ -182,7 +183,7 @@
             this.maltNameBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.maltNameBox.Name = "maltNameBox";
             this.maltNameBox.Size = new System.Drawing.Size(244, 26);
-            this.maltNameBox.TabIndex = 18;
+            this.maltNameBox.TabIndex = 1;
             // 
             // label2
             // 
@@ -200,7 +201,7 @@
             this.maltPPGBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.maltPPGBox.Name = "maltPPGBox";
             this.maltPPGBox.Size = new System.Drawing.Size(244, 26);
-            this.maltPPGBox.TabIndex = 20;
+            this.maltPPGBox.TabIndex = 2;
             // 
             // label3
             // 
@@ -218,7 +219,7 @@
             this.maltColorBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.maltColorBox.Name = "maltColorBox";
             this.maltColorBox.Size = new System.Drawing.Size(244, 26);
-            this.maltColorBox.TabIndex = 22;
+            this.maltColorBox.TabIndex = 3;
             // 
             // label4
             // 
@@ -236,7 +237,8 @@
             this.maltTypeBox.Location = new System.Drawing.Point(908, 252);
             this.maltTypeBox.Name = "maltTypeBox";
             this.maltTypeBox.Size = new System.Drawing.Size(244, 28);
-            this.maltTypeBox.TabIndex = 28;
+            this.maltTypeBox.TabIndex = 4;
+            this.maltTypeBox.SelectedIndexChanged += new System.EventHandler(this.maltTypeBox_SelectedIndexChanged);
             // 
             // label8
             // 
@@ -254,14 +256,14 @@
             this.maltMaltsterBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.maltMaltsterBox.Name = "maltMaltsterBox";
             this.maltMaltsterBox.Size = new System.Drawing.Size(244, 26);
-            this.maltMaltsterBox.TabIndex = 29;
+            this.maltMaltsterBox.TabIndex = 5;
             // 
             // DeleteMaltButton
             // 
             this.DeleteMaltButton.Location = new System.Drawing.Point(908, 422);
             this.DeleteMaltButton.Name = "DeleteMaltButton";
             this.DeleteMaltButton.Size = new System.Drawing.Size(244, 29);
-            this.DeleteMaltButton.TabIndex = 19;
+            this.DeleteMaltButton.TabIndex = 7;
             this.DeleteMaltButton.Text = "Delete Malt";
             this.DeleteMaltButton.UseVisualStyleBackColor = true;
             this.DeleteMaltButton.Click += new System.EventHandler(this.DeleteMaltButton_Click);
@@ -271,7 +273,7 @@
             this.addMaltButton.Location = new System.Drawing.Point(908, 372);
             this.addMaltButton.Name = "addMaltButton";
             this.addMaltButton.Size = new System.Drawing.Size(244, 31);
-            this.addMaltButton.TabIndex = 18;
+            this.addMaltButton.TabIndex = 6;
             this.addMaltButton.Text = "Add Malt";
             this.addMaltButton.UseVisualStyleBackColor = true;
             this.addMaltButton.Click += new System.EventHandler(this.addMaltButton_Click);
@@ -291,7 +293,7 @@
             this.groupBox2.Controls.Add(this.maltColorBox);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Location = new System.Drawing.Point(620, 12);
+            this.groupBox2.Location = new System.Drawing.Point(12, 12);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(1160, 465);
             this.groupBox2.TabIndex = 31;
@@ -314,7 +316,7 @@
             this.deleteYeastButton.Location = new System.Drawing.Point(486, 422);
             this.deleteYeastButton.Name = "deleteYeastButton";
             this.deleteYeastButton.Size = new System.Drawing.Size(244, 29);
-            this.deleteYeastButton.TabIndex = 23;
+            this.deleteYeastButton.TabIndex = 12;
             this.deleteYeastButton.Text = "Delete Yeast";
             this.deleteYeastButton.UseVisualStyleBackColor = true;
             this.deleteYeastButton.Click += new System.EventHandler(this.deleteYeastButton_Click);
@@ -324,7 +326,7 @@
             this.addYeastButton.Location = new System.Drawing.Point(486, 385);
             this.addYeastButton.Name = "addYeastButton";
             this.addYeastButton.Size = new System.Drawing.Size(244, 31);
-            this.addYeastButton.TabIndex = 18;
+            this.addYeastButton.TabIndex = 11;
             this.addYeastButton.Text = "Add Yeast";
             this.addYeastButton.UseVisualStyleBackColor = true;
             this.addYeastButton.Click += new System.EventHandler(this.addYeastButton_Click);
@@ -345,7 +347,7 @@
             this.yeastNameBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.yeastNameBox.Name = "yeastNameBox";
             this.yeastNameBox.Size = new System.Drawing.Size(244, 26);
-            this.yeastNameBox.TabIndex = 19;
+            this.yeastNameBox.TabIndex = 9;
             // 
             // label9
             // 
@@ -363,7 +365,7 @@
             this.yeastLabBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.yeastLabBox.Name = "yeastLabBox";
             this.yeastLabBox.Size = new System.Drawing.Size(244, 26);
-            this.yeastLabBox.TabIndex = 20;
+            this.yeastLabBox.TabIndex = 8;
             // 
             // label10
             // 
@@ -381,7 +383,7 @@
             this.yeastAttenuationBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.yeastAttenuationBox.Name = "yeastAttenuationBox";
             this.yeastAttenuationBox.Size = new System.Drawing.Size(244, 26);
-            this.yeastAttenuationBox.TabIndex = 32;
+            this.yeastAttenuationBox.TabIndex = 10;
             // 
             // groupBox3
             // 
@@ -401,11 +403,22 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Yeasts";
             // 
+            // refreshButton
+            // 
+            this.refreshButton.Location = new System.Drawing.Point(1179, 23);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(187, 37);
+            this.refreshButton.TabIndex = 17;
+            this.refreshButton.Text = "Refresh";
+            this.refreshButton.UseVisualStyleBackColor = true;
+            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
+            // 
             // IngredientManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1790, 1382);
+            this.ClientSize = new System.Drawing.Size(1375, 957);
+            this.Controls.Add(this.refreshButton);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -458,5 +471,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.TextBox yeastAttenuationBox;
         private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button refreshButton;
     }
 }

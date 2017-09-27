@@ -70,10 +70,10 @@ namespace Brewcrosoft_Brewmeister.Data
         public string hidden;
 
         //public List<hop> hops = new List<hop>();
-        public List<fermentable> fermentables = new List<fermentable>();
-        public List<yeast> yeasts = new List<yeast>();
-        public List<adjunct> adjuncts = new List<adjunct>();
-
+      public List<fermentable> fermentables = new List<fermentable>();
+      public List<yeast> yeasts = new List<yeast>();
+      public List<adjunct> adjuncts = new List<adjunct>();
+     
         public BeerStats beerStatistics = new BeerStats();
 
         public class BeerStats
@@ -98,6 +98,11 @@ namespace Brewcrosoft_Brewmeister.Data
         public float fg;
         public string id;
         public string test;
+      //  public List<yeastlist> yeasts = new List<yeastlist>();
+      //  public List<fermentablelist> fermentables = new List<fermentablelist>();
+      //  public List<adjunctList> adjuncts = new List<adjunctList>();
+      //  public List<hoplist> hops = new List<hoplist>();
+
         public List<yeastlist> yeasts = new List<yeastlist>();
         public List<fermentablelist> fermentables = new List<fermentablelist>();
         public List<adjunctList> adjuncts = new List<adjunctList>();
@@ -122,7 +127,7 @@ namespace Brewcrosoft_Brewmeister.Data
         public string recipeID;
         public string yeastID;
         public string ID;
-        public List<yeast2> yeast = new List<yeast2>();
+        public yeast2 yeast = new yeast2();
     }
 
     public class yeast2
@@ -140,7 +145,7 @@ namespace Brewcrosoft_Brewmeister.Data
         public string use;
         public float weight;
         public string id;
-        public List<fermentable2> fermentables = new List<fermentable2>();
+        public fermentable2 fermentable = new fermentable2();
     }
 
     public class fermentable2
@@ -163,7 +168,7 @@ namespace Brewcrosoft_Brewmeister.Data
         public string timeUnit;
         public string type;
         public string id;
-        public List<adjunct2> adjunct = new List<adjunct2>();
+        public adjunct2 adjunct = new adjunct2();
     }
 
     public class adjunct2
@@ -180,7 +185,7 @@ namespace Brewcrosoft_Brewmeister.Data
         public string type;
         public float time;
         public string id;
-        public List<hop2> hop = new List<hop2>();
+        public hop2 hop = new hop2();
     }
 
     public class hop2

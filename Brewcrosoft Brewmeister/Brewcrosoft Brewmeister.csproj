@@ -114,6 +114,18 @@
     <Compile Include="Brewmeister.Designer.cs">
       <DependentUpon>Brewmeister.cs</DependentUpon>
     </Compile>
+    <Compile Include="GetHops.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GetHops.Designer.cs">
+      <DependentUpon>GetHops.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GetMalts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GetMalts.Designer.cs">
+      <DependentUpon>GetMalts.cs</DependentUpon>
+    </Compile>
     <Compile Include="IngredientManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,6 +172,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Brewmeister.resx">
       <DependentUpon>Brewmeister.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GetHops.resx">
+      <DependentUpon>GetHops.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GetMalts.resx">
+      <DependentUpon>GetMalts.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="IngredientManager.resx">
       <DependentUpon>IngredientManager.cs</DependentUpon>

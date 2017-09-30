@@ -132,7 +132,6 @@ namespace Brewcrosoft_Brewmeister
             YeastGrid.Columns[0].Width = 100;
             YeastGrid.Columns[1].Width = 100;
             YeastGrid.Columns[2].Width = 100;
-            PopulateMaltList();
             RefreshStatistics();
 
             //Other Ingredients Grid Stuff
@@ -180,7 +179,7 @@ namespace Brewcrosoft_Brewmeister
          * */
         private void BackPopulateRecipeFromGridChange()
         {
-            for (int i = 0; i < HopGrid.RowCount - 1; i++)
+            for (int i = 0; i < HopGrid.RowCount; i++)
             {
                 if (currentRecipe.hops.Count > i)
                 {
@@ -203,7 +202,7 @@ namespace Brewcrosoft_Brewmeister
              * 
              * thaaaaannnks.  *bitch*
              * */
-            for (int i = 0; i < MaltGrid.RowCount - 1; i++)
+            for (int i = 0; i < MaltGrid.RowCount; i++)
             {
                 if (currentRecipe.fermentables.Count > i)
                 {
@@ -428,7 +427,7 @@ namespace Brewcrosoft_Brewmeister
         {
             BackPopulateRecipeFromGridChange();
 
-            using (var HopDialog = new GetHops())
+            using (var HopDialog = new IngredientPicker("Hops"))
             {
                 var result = HopDialog.ShowDialog();
                 if (result == DialogResult.OK)
@@ -453,28 +452,15 @@ namespace Brewcrosoft_Brewmeister
            // currentRecipe.hops.Add()
         }
 
-        /*Populates the hop list
-         * */
-        public void PopulateHopList()
-        {
-            HopGrid.Rows.Clear();
-            int i = 0;
-            foreach (string element in HopNameList)
-            {
-                HopGrid.Rows.Add(HopNameList[i], HopTypeList[i], HopAmountList[i], AAUList[i], HopTimeList[i]);
-                i++;
-            }
-
-        }
-
         /*
          * Deletes a hop from the recipe.
          * */
         private void RemoveHopsButton_Click(object sender, EventArgs e)
         {
-
-            currentRecipe.hops.RemoveAt(HopGrid.CurrentRow.Index);
-            PopulateHopList();
+            int index = HopGrid.CurrentRow.Index;
+            HopGrid.Rows.Clear();
+            currentRecipe.hops.RemoveAt(index);
+            populateGrids();
             RefreshStatistics();
         }
 
@@ -491,42 +477,13 @@ namespace Brewcrosoft_Brewmeister
 
         #region Malt Stuff
         /*
-        * A Shitty attempt to get a combo box thing for picking malts but it fucking sucked and 
-        * I hated it.
-        * */
-        private void DataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
-        {
-          //  if (e.ColumnIndex == 0)
-          //  {
-          //      if (e.RowIndex < MaltNameList.Count)
-          //      {
-          //          MaltNameList[e.RowIndex] = (string)MaltGrid[0, e.RowIndex].Value;
-          //          WeightList[e.RowIndex] = float.Parse(MaltGrid[1, e.RowIndex].Value.ToString());
-          //          PPGList[e.RowIndex] = float.Parse(MaltGrid[2, e.RowIndex].Value.ToString());
-          //          ColorList[e.RowIndex] = float.Parse(MaltGrid[3, e.RowIndex].Value.ToString());
-          //          ExtractList[e.RowIndex] = (Boolean)MaltGrid[4, e.RowIndex].Value;
-          //
-          //      } else
-          //      {
-          //          MaltNameList.Add((string)MaltGrid[0, e.RowIndex].Value);
-          //          WeightList.Add(float.Parse(MaltGrid[1, e.RowIndex].Value.ToString()));
-          //          PPGList.Add(float.Parse(MaltGrid[2, e.RowIndex].Value.ToString()));
-          //          ColorList.Add(float.Parse(MaltGrid[3, e.RowIndex].Value.ToString()));
-          //          ExtractList.Add((Boolean)MaltGrid[4, e.RowIndex].Value);
-          //      }
-          //     // PopulateMaltList();
-          //      RefreshStatistics();
-          //  }
-        }
-
-        /*
- * Ancient shitty shit that doesn't work.
+ * Opens the ingredient picker in malt mode...
  * */
         private void AddMaltButton_Click(object sender, EventArgs e)
         {
             BackPopulateRecipeFromGridChange();
 
-            using (var MaltDialog = new GetMalts())
+            using (var MaltDialog = new IngredientPicker("Malts"))
             {
                 var result = MaltDialog.ShowDialog();
                 if (result == DialogResult.OK)
@@ -550,30 +507,29 @@ namespace Brewcrosoft_Brewmeister
             add.fermentable = handler.getFermentable(selectedMalt);
             add.recipeID = currentRecipe.id;
             currentRecipe.fermentables.Add(add);
-            // currentRecipe.hops.Add()
+            //currentRecipe.fermentables.Add()
         }
 
         private void MaltGrid_CellLeave(object sender, DataGridViewCellEventArgs e)
         {
             BackPopulateRecipeFromGridChange();
-            //  PopulateHopList();
             RefreshStatistics();
         }
 
         /*
          * populates the malt list...
          * */
-        public void PopulateMaltList()
-        {
-            MaltGrid.Rows.Clear();
-            int i = 0;
-            foreach(string element in MaltNameList)
-            {
-                MaltGrid.Rows.Add(MaltNameList[i], WeightList[i], PPGList[i], ColorList[i], ExtractList[i]);
-                i++;
-            }
-
-        }
+    //    public void PopulateMaltList()
+    //    {
+    //        MaltGrid.Rows.Clear();
+    //        int i = 0;
+    //        foreach(string element in MaltNameList)
+    //        {
+    //            MaltGrid.Rows.Add(MaltNameList[i], WeightList[i], PPGList[i], ColorList[i], ExtractList[i]);
+    //            i++;
+    //        }
+    //
+    //    }
 
 
         /*
@@ -581,12 +537,10 @@ namespace Brewcrosoft_Brewmeister
          * */
         private void RemoveMaltButton_Click(object sender, EventArgs e)
         {
-            MaltNameList.RemoveAt(MaltGrid.CurrentRow.Index);
-            WeightList.RemoveAt(MaltGrid.CurrentRow.Index);
-            PPGList.RemoveAt(MaltGrid.CurrentRow.Index);
-            ColorList.RemoveAt(MaltGrid.CurrentRow.Index);
-            ExtractList.RemoveAt(MaltGrid.CurrentRow.Index);
-            PopulateMaltList();
+            int index = MaltGrid.CurrentRow.Index;
+            MaltGrid.Rows.Clear();
+            currentRecipe.fermentables.RemoveAt(index);
+            populateGrids();
             RefreshStatistics();
         }
 
@@ -622,7 +576,7 @@ namespace Brewcrosoft_Brewmeister
             YeastTempRangeStartList.RemoveAt(MaltGrid.CurrentRow.Index);
             YeastTempRangeEndList.RemoveAt(MaltGrid.CurrentRow.Index);
             YeastFlocculationList.RemoveAt(MaltGrid.CurrentRow.Index);
-            PopulateMaltList();
+            //PopulateMaltList();
             RefreshStatistics();
         }
 

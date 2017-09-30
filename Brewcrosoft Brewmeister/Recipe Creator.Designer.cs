@@ -160,16 +160,14 @@
             // 
             this.MaltGrid.AllowUserToAddRows = false;
             this.MaltGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.MaltGrid.Cursor = System.Windows.Forms.Cursors.No;
             this.MaltGrid.Location = new System.Drawing.Point(7, 60);
             this.MaltGrid.Name = "MaltGrid";
             this.MaltGrid.RowHeadersVisible = false;
             this.MaltGrid.ShowEditingIcon = false;
             this.MaltGrid.Size = new System.Drawing.Size(394, 462);
             this.MaltGrid.TabIndex = 0;
-            this.MaltGrid.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.MaltGrid_CellLeave);
             this.MaltGrid.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.HopGrid_CellLeave);
-            this.MaltGrid.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.HopGrid_CellLeave);
-            this.MaltGrid.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridView1_CellValueChanged);
             // 
             // HopGroup
             // 

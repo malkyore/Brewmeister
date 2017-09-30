@@ -17,6 +17,8 @@ namespace Brewcrosoft_Brewmeister
         public string dataurl;
         List<hop2> hopList = new List<hop2>();
         List<fermentable2> fermentableList = new List<fermentable2>();
+        List<yeast2> yeastList = new List<yeast2>();
+        List<adjunct2> adjunctList = new List<adjunct2>();
         public String selectedKey;
         public string versionName;
         public IngredientPicker(string version)
@@ -36,6 +38,14 @@ namespace Brewcrosoft_Brewmeister
                     IngredientGrid.Columns.Add("Type", "Type");
                     IngredientGrid.Columns.Add("Maltster", "Maltster");
                     break;
+                case "Yeasts":
+                    IngredientGrid.Columns.Add("Lab", "Lab");
+                    IngredientGrid.Columns.Add("Product", "Product");
+                    IngredientGrid.Columns.Add("Attenuation", "Attenuation");
+                    break;
+                case "Adjuncts":
+                    IngredientGrid.Columns.Add("Name", "Name");
+                    break;
             }
             populateGrid();
         }
@@ -54,6 +64,13 @@ namespace Brewcrosoft_Brewmeister
                 case "Malts":
                     selectedKey = fermentableList[IngredientGrid.CurrentCell.RowIndex].id;
                     break;
+                case "Yeasts":
+                    selectedKey = yeastList[IngredientGrid.CurrentCell.RowIndex].id;
+                    break;
+                case "Adjuncts":
+                    selectedKey = adjunctList[IngredientGrid.CurrentCell.RowIndex].id;
+                    break;
+
             }
             this.DialogResult = DialogResult.OK;
             this.Close();
@@ -73,6 +90,16 @@ namespace Brewcrosoft_Brewmeister
                 case "Malts":
                     jsonurl = dataurl + "/fermentables";
                     fermentableList = handler.getFermentables();
+                    populateGrid();
+                    break;
+                case "Yeasts":
+                    jsonurl = dataurl + "/yeast";
+                    yeastList = handler.getYeasts();
+                    populateGrid();
+                    break;
+                case "Adjuncts":
+                    jsonurl = dataurl + "/adjunct";
+                    adjunctList = handler.getAdjuncts();
                     populateGrid();
                     break;
             }
@@ -99,6 +126,20 @@ namespace Brewcrosoft_Brewmeister
                         i++;
                     }
                     break;
+                case "Yeasts":
+                    foreach (yeast2 element in yeastList)
+                    {
+                        IngredientGrid.Rows.Add(yeastList[i].lab, yeastList[i].name, yeastList[i].attenuation);
+                        i++;
+                    }
+                    break;
+                case "Adjuncts":
+                    foreach (adjunct2 element in adjunctList)
+                    {
+                        IngredientGrid.Rows.Add(adjunctList[i].name);
+                        i++;
+                    }
+                    break;
             }
         }
 
@@ -113,6 +154,9 @@ namespace Brewcrosoft_Brewmeister
                     break;
                 case "Malts":
                         selectedKey = fermentableList[IngredientGrid.CurrentRow.Index].id;
+                        break;
+                    case "Adjuncts":
+                        selectedKey = adjunctList[IngredientGrid.CurrentRow.Index].id;
                         break;
             }
             }

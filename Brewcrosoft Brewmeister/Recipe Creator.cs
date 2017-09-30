@@ -127,8 +127,11 @@ namespace Brewcrosoft_Brewmeister
 
             //Yeast Grid Stuff
             YeastGrid.Columns.Add("Lab", "Lab");
+            YeastGrid.Columns[0].ReadOnly = true;
             YeastGrid.Columns.Add("Product", "Product");
+            YeastGrid.Columns[1].ReadOnly = true;
             YeastGrid.Columns.Add("Attenuation", "Attenuation");
+            YeastGrid.Columns[2].ReadOnly = true;
             YeastGrid.Columns[0].Width = 100;
             YeastGrid.Columns[1].Width = 100;
             YeastGrid.Columns[2].Width = 100;
@@ -516,21 +519,6 @@ namespace Brewcrosoft_Brewmeister
             RefreshStatistics();
         }
 
-        /*
-         * populates the malt list...
-         * */
-    //    public void PopulateMaltList()
-    //    {
-    //        MaltGrid.Rows.Clear();
-    //        int i = 0;
-    //        foreach(string element in MaltNameList)
-    //        {
-    //            MaltGrid.Rows.Add(MaltNameList[i], WeightList[i], PPGList[i], ColorList[i], ExtractList[i]);
-    //            i++;
-    //        }
-    //
-    //    }
-
 
         /*
          * Old broken malt removal code.
@@ -568,49 +556,37 @@ namespace Brewcrosoft_Brewmeister
          * */
         private void RemoveYeastButton_Click(object sender, EventArgs e)
         {
-            YeastLabList.RemoveAt(MaltGrid.CurrentRow.Index);
-            YeastProductList.RemoveAt(MaltGrid.CurrentRow.Index);
-            YeastAlcoholToleranceList.RemoveAt(MaltGrid.CurrentRow.Index);
-            YeastAttenuationList.RemoveAt(MaltGrid.CurrentRow.Index);
-            YeastTypeList.RemoveAt(MaltGrid.CurrentRow.Index);
-            YeastTempRangeStartList.RemoveAt(MaltGrid.CurrentRow.Index);
-            YeastTempRangeEndList.RemoveAt(MaltGrid.CurrentRow.Index);
-            YeastFlocculationList.RemoveAt(MaltGrid.CurrentRow.Index);
-            //PopulateMaltList();
+            int index = YeastGrid.CurrentRow.Index;
+            YeastGrid.Rows.Clear();
+            currentRecipe.yeasts.RemoveAt(index);
+            populateGrids();
             RefreshStatistics();
         }
 
         /*
-        * Old broken add yeast code.
+        * Opens the Ingredient Picker for yeasts
         * */
         private void AddYeastButton_Click(object sender, EventArgs e)
         {
-            using (var YeastDialog = new AddYeast())
+            using (var yeastDialog = new IngredientPicker("Yeasts"))
             {
-                var result = YeastDialog.ShowDialog();
+                var result = yeastDialog.ShowDialog();
                 if (result == DialogResult.OK)
                 {
-                    String lab = YeastDialog.Lab;
-                    //  String flocculation = YeastDialog.Flocculation;
-                    //  String alcoholTolerance = YeastDialog.AlcoholTolerance;
-                    String product = YeastDialog.Product;
-                    //   String type = YeastDialog.YeastType;
-                    float attenuation = YeastDialog.Attenuation;
-                    // float tempRangeStart = YeastDialog.TempRangeStart;
-                    // float tempRangeEnd = YeastDialog.TempRangeEnd;
-                    YeastLabList.Add(lab);
-                    YeastProductList.Add(product);
-                    //YeastAlcoholToleranceList.Add(alcoholTolerance);
-                    YeastAttenuationList.Add(attenuation);
-                    // YeastTypeList.Add(type);
-                    //YeastTempRangeStartList.Add(tempRangeStart);
-                    //YeastTempRangeEndList.Add(tempRangeEnd);
-                    //YeastFlocculationList.Add(flocculation);
-
-                    PopulateYeastList();
-                    RefreshStatistics();
+                    LoadYeast(yeastDialog.selectedKey);
+                    populateGrids();
                 }
             }
+        }
+
+        private void LoadYeast(string selectedYeast)
+        {
+            APIHandler handler = new APIHandler();
+            yeastlist add = new yeastlist();
+            add.ID = selectedYeast;
+            add.yeast = handler.getYeast(selectedYeast);
+            add.recipeID = currentRecipe.id;
+            currentRecipe.yeasts.Add(add);
         }
 
         #endregion
@@ -621,23 +597,25 @@ namespace Brewcrosoft_Brewmeister
          * */
         private void AddOtherIngredientsButton_Click(object sender, EventArgs e)
         {
-            using (var OtherDialog = new AddOtherIngredients())
+            using (var adjunctDialog = new IngredientPicker("Adjuncts"))
             {
-                var result = OtherDialog.ShowDialog();
+                var result = adjunctDialog.ShowDialog();
                 if (result == DialogResult.OK)
                 {
-                    String Name = OtherDialog.Name;
-                    String type = OtherDialog.Type;
-                    float amount = OtherDialog.Amount;
-
-                    OtherIngredientName.Add(Name);
-                    OtherIngredientAmount.Add(amount);
-                    OtherIngredientType.Add(type);
-
-                    PopulateOtherList();
-                    RefreshStatistics();
+                    LoadAdjunct(adjunctDialog.selectedKey);
+                    populateGrids();
                 }
             }
+        }
+
+        private void LoadAdjunct(string selectedAdjunct)
+        {
+            APIHandler handler = new APIHandler();
+            adjunctList add = new adjunctList();
+            add.id = selectedAdjunct;
+            add.adjunct = handler.getAdjunct(selectedAdjunct);
+            add.recipeID = currentRecipe.id;
+            currentRecipe.adjuncts.Add(add);
         }
 
         /*

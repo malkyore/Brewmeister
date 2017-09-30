@@ -112,5 +112,36 @@ namespace Brewcrosoft_Brewmeister
             hopList = JsonConvert.DeserializeObject<List<yeast2>>(json);
             return hopList;
         }
+        public yeast2 getYeast(string yeastID)
+        {
+            RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister");
+            string dataurl = (string)adsfa.GetValue("dataurl");
+            string jsonurl = dataurl + "/yeast?id=" + yeastID;
+            yeast2 returnable = new yeast2();
+            var json = new WebClient().DownloadString(jsonurl);
+            returnable = JsonConvert.DeserializeObject<yeast2>(json);
+            return returnable;
+        }
+
+        public List<adjunct2> getAdjuncts()
+        {
+            RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister");
+            string dataurl = (string)adsfa.GetValue("dataurl");
+            string jsonurl = dataurl + "/adjunct";
+            List<adjunct2> hopList = new List<adjunct2>();
+            var json = new WebClient().DownloadString(jsonurl);
+            hopList = JsonConvert.DeserializeObject<List<adjunct2>>(json);
+            return hopList;
+        }
+        public adjunct2 getAdjunct(string adjunctID)
+        {
+            RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister");
+            string dataurl = (string)adsfa.GetValue("dataurl");
+            string jsonurl = dataurl + "/adjunct?id=" + adjunctID;
+            adjunct2 returnable = new adjunct2();
+            var json = new WebClient().DownloadString(jsonurl);
+            returnable = JsonConvert.DeserializeObject<adjunct2>(json);
+            return returnable;
+        }
     }    
 }

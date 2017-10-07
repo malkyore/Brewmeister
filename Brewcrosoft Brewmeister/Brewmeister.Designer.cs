@@ -36,6 +36,7 @@
             this.Era1Button = new System.Windows.Forms.Button();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewRecipesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ingredientManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newBeerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openBeerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveBeerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,7 +63,6 @@
             this.hopaau = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.ingredientManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -152,34 +152,43 @@
             // viewRecipesToolStripMenuItem
             // 
             this.viewRecipesToolStripMenuItem.Name = "viewRecipesToolStripMenuItem";
-            this.viewRecipesToolStripMenuItem.Size = new System.Drawing.Size(253, 30);
+            this.viewRecipesToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
             this.viewRecipesToolStripMenuItem.Text = "View Recipes";
             this.viewRecipesToolStripMenuItem.Click += new System.EventHandler(this.viewRecipesToolStripMenuItem_Click);
+            // 
+            // ingredientManagerToolStripMenuItem
+            // 
+            this.ingredientManagerToolStripMenuItem.Name = "ingredientManagerToolStripMenuItem";
+            this.ingredientManagerToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
+            this.ingredientManagerToolStripMenuItem.Text = "Ingredient Manager";
+            this.ingredientManagerToolStripMenuItem.Click += new System.EventHandler(this.ingredientManagerToolStripMenuItem_Click);
             // 
             // newBeerToolStripMenuItem
             // 
             this.newBeerToolStripMenuItem.Name = "newBeerToolStripMenuItem";
-            this.newBeerToolStripMenuItem.Size = new System.Drawing.Size(253, 30);
+            this.newBeerToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
             this.newBeerToolStripMenuItem.Text = "New Beer";
             this.newBeerToolStripMenuItem.Click += new System.EventHandler(this.newBeerToolStripMenuItem_Click);
             // 
             // openBeerToolStripMenuItem
             // 
+            this.openBeerToolStripMenuItem.Enabled = false;
             this.openBeerToolStripMenuItem.Name = "openBeerToolStripMenuItem";
-            this.openBeerToolStripMenuItem.Size = new System.Drawing.Size(253, 30);
+            this.openBeerToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
             this.openBeerToolStripMenuItem.Text = "Open Beer";
             this.openBeerToolStripMenuItem.Click += new System.EventHandler(this.openBeerToolStripMenuItem_Click);
             // 
             // saveBeerToolStripMenuItem
             // 
+            this.saveBeerToolStripMenuItem.Enabled = false;
             this.saveBeerToolStripMenuItem.Name = "saveBeerToolStripMenuItem";
-            this.saveBeerToolStripMenuItem.Size = new System.Drawing.Size(253, 30);
+            this.saveBeerToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
             this.saveBeerToolStripMenuItem.Text = "Save Beer";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(253, 30);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // menuStrip1
@@ -206,7 +215,7 @@
             // fileLocationsToolStripMenuItem
             // 
             this.fileLocationsToolStripMenuItem.Name = "fileLocationsToolStripMenuItem";
-            this.fileLocationsToolStripMenuItem.Size = new System.Drawing.Size(203, 30);
+            this.fileLocationsToolStripMenuItem.Size = new System.Drawing.Size(202, 30);
             this.fileLocationsToolStripMenuItem.Text = "File Locations";
             this.fileLocationsToolStripMenuItem.Click += new System.EventHandler(this.fileLocationsToolStripMenuItem_Click);
             // 
@@ -399,13 +408,6 @@
             this.label8.TabIndex = 14;
             this.label8.Text = "AAU: ";
             this.label8.Click += new System.EventHandler(this.label8_Click);
-            // 
-            // ingredientManagerToolStripMenuItem
-            // 
-            this.ingredientManagerToolStripMenuItem.Name = "ingredientManagerToolStripMenuItem";
-            this.ingredientManagerToolStripMenuItem.Size = new System.Drawing.Size(253, 30);
-            this.ingredientManagerToolStripMenuItem.Text = "Ingredient Manager";
-            this.ingredientManagerToolStripMenuItem.Click += new System.EventHandler(this.ingredientManagerToolStripMenuItem_Click);
             // 
             // HomeScreen
             // 

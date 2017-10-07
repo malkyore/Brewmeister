@@ -96,6 +96,8 @@ namespace Brewcrosoft_Brewmeister.Data
         public float abv;
         public float ibu;
         public float fg;
+        public float og;
+        public float srm;
         public string id;
         public string test;
       //  public List<yeastlist> yeasts = new List<yeastlist>();

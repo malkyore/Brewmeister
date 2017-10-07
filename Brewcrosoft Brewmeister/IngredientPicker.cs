@@ -85,24 +85,21 @@ namespace Brewcrosoft_Brewmeister
                 case "Hops":
                     jsonurl = dataurl + "/hop";
                     hopList = handler.getHops();
-                    populateGrid();
                     break;
                 case "Malts":
                     jsonurl = dataurl + "/fermentables";
                     fermentableList = handler.getFermentables();
-                    populateGrid();
                     break;
                 case "Yeasts":
                     jsonurl = dataurl + "/yeast";
                     yeastList = handler.getYeasts();
-                    populateGrid();
                     break;
                 case "Adjuncts":
                     jsonurl = dataurl + "/adjunct";
                     adjunctList = handler.getAdjuncts();
-                    populateGrid();
                     break;
             }
+            populateGrid();
         }
 
 

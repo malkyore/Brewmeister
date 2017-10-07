@@ -129,25 +129,14 @@ namespace Brewcrosoft_Brewmeister
             using (var newBeer = new New_Beer())
             {
                 var result = newBeer.ShowDialog(); ;
+                recipe2 newRecipe = new recipe2();
                 if (result == DialogResult.OK)
                 {
-                    BeerNameBox.Text = currentRecipe.name;
-                    BeerStyleBox.Text = currentRecipe.style;
-                    BeerDescriptionBox.Text = currentRecipe.description;
-                    BeerNameBox.Enabled = true;
-                    BeerStyleBox.Enabled = true;
-                    BeerDescriptionBox.Enabled = true;
-                    Era1Button.Enabled = true;
-
-
-                    //Statistical information
-                    currentRecipe.beerStatistics.PPGPoints = 0;
-                    currentRecipe.beerStatistics.SRM = 0;
-                    currentRecipe.beerStatistics.CurrentOG = 0;
-                    currentRecipe.beerStatistics.CurrentFG = 0;
-                    currentRecipe.beerStatistics.CurrentABV = 0;
-                    currentRecipe.beerStatistics.KitEfficiency = 0.70;//for now....
-                    currentRecipe.beerStatistics.IntoFermenterVolume = 5;//for now...
+                    newRecipe.name = newBeer.BeerName;
+                    newRecipe.style = newBeer.BeerStyle;
+                    newRecipe.description = newBeer.BeerDescription;
+                    APIHandler handler = new APIHandler();
+                    handler.postRecipe(newRecipe);
                 }
             }
         }
@@ -256,7 +245,9 @@ namespace Brewcrosoft_Brewmeister
 
             string jsonurl = dataurl + "/recipe?id=" + currentRecipeKey + "&include=fullrecipe";
             string json = new WebClient().DownloadString(jsonurl);
-            currentRecipe = JsonConvert.DeserializeObject<recipe2>(json);
+            APIHandler handler = new APIHandler();
+            currentRecipe = handler.loadRecipe(currentRecipeKey);
+            //currentRecipe = JsonConvert.DeserializeObject<recipe2>(json);
             int i = 1;
 
             //currentRecipe.name = rootObject.name;

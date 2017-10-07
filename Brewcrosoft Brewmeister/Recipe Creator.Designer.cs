@@ -160,14 +160,16 @@
             // 
             this.MaltGrid.AllowUserToAddRows = false;
             this.MaltGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.MaltGrid.Cursor = System.Windows.Forms.Cursors.No;
+            this.MaltGrid.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.MaltGrid.Location = new System.Drawing.Point(7, 60);
             this.MaltGrid.Name = "MaltGrid";
             this.MaltGrid.RowHeadersVisible = false;
             this.MaltGrid.ShowEditingIcon = false;
             this.MaltGrid.Size = new System.Drawing.Size(394, 462);
             this.MaltGrid.TabIndex = 0;
+            this.MaltGrid.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.HopGrid_CellLeave);
             this.MaltGrid.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.HopGrid_CellLeave);
+            this.MaltGrid.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.HopGrid_CellLeave);
             // 
             // HopGroup
             // 
@@ -484,6 +486,7 @@
             this.button1.TabIndex = 6;
             this.button1.Text = "Remove";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // AddOtherIngredientsButton
             // 

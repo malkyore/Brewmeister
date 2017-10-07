@@ -140,6 +140,9 @@ namespace Brewcrosoft_Brewmeister
             //Other Ingredients Grid Stuff
             OtherIngredientsGrid.Columns.Add("Name", "Name");
             OtherIngredientsGrid.Columns.Add("Amount", "Amount");
+            OtherIngredientsGrid.Columns.Add("Unit", "Unit");
+            OtherIngredientsGrid.Columns.Add("Time", "Time");
+            OtherIngredientsGrid.Columns.Add("TimeUnit", "TimeUnit");
             OtherIngredientsGrid.Columns.Add("Type", "Type");
 
             populateGrids();
@@ -193,18 +196,6 @@ namespace Brewcrosoft_Brewmeister
                 }
 
             }
-
-            /*
-             * My dearest me of the future...
-             * 
-             * If you would be so kind as to set the correct fermentableID inside of the Ferbemtables object
-             * for items added via the add fermentables window that would be awesome.
-             * 
-             * FermentableadditionID's will be added when they are added to the API and returned via that method.
-             * 
-             * 
-             * thaaaaannnks.  *bitch*
-             * */
             for (int i = 0; i < MaltGrid.RowCount; i++)
             {
                 if (currentRecipe.fermentables.Count > i)
@@ -282,6 +273,12 @@ namespace Brewcrosoft_Brewmeister
             IBULabel.Text = "" + IBUCalc;
             ABVLabel.Text = "" + CurrentABV;
 
+            currentRecipe.abv = (float)CurrentABV;
+            currentRecipe.fg = (float)CurrentFG;
+            currentRecipe.og = (float)CurrentOG;
+            currentRecipe.srm = (float)SRMCalc;
+            currentRecipe.ibu = (float)IBUCalc;
+
             KitEfficiencyBox.Text = "" + KitEfficiency;
             IntoFermenterVolumeBox.Text = "" + IntoFermenterVolume;
         }
@@ -334,90 +331,35 @@ namespace Brewcrosoft_Brewmeister
          * */
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            List<String> LinesList = new List<String>();
-            String TempLine = "";
-            //Beer Info
-            TempLine = BeerName + "\t" + DateTime.Now + "\t" + this.BeerDescription;
-            LinesList.Add(TempLine);
-            TempLine = "";
-            TempLine = BeerStyle + "\t" + IBULabel.Text + "\t" + SRMLabel.Text + "\t" + OGLabel.Text + "\t" + ABVLabel.Text;
-            LinesList.Add(TempLine);
-
-            //Schedule
-
-
-            //Recipe
-            TempLine = "RECIPE";
-            LinesList.Add(TempLine);
-            TempLine = "MALTS";
-            LinesList.Add(TempLine);
-            int i = 0;
-            foreach (string maltname in MaltNameList)
+            bool reload = false;
+            APIHandler handler = new APIHandler();
+            foreach (hoplist h in currentRecipe.hops)
             {
-                TempLine = MaltNameList[i] + "\t" + WeightList[i] + "\t" + PPGList[i] + "\t" + ColorList[i] + "\t" + ExtractList[i];
-                i++;
-                LinesList.Add(TempLine);
+                handler.postHopAddition(h);
             }
-            TempLine = "ENDMALTS";
-            LinesList.Add(TempLine);
-            TempLine = "HOPS";
-            LinesList.Add(TempLine);
-            i = 0;
-            foreach (string hopname in HopNameList)
+            foreach(fermentablelist f in currentRecipe.fermentables)
             {
-                TempLine = HopNameList[i] + "\t" + HopAmountList[i] + "\t" + AAUList[i] + "\t" + HopTimeList[i] + "\t" + HopTypeList[i];
-                i++;
-                LinesList.Add(TempLine);
-            }
-            TempLine = "ENDHOPS";
-            LinesList.Add(TempLine);
-            TempLine = "YEASTS";
-            LinesList.Add(TempLine);
-            i = 0;
-            foreach (string labname in YeastLabList)
-            {
-                TempLine = YeastLabList[i] + "\t" + YeastProductList[i] + "\t" + YeastAttenuationList[i];
-                i++;
-                LinesList.Add(TempLine);
-            }
-            TempLine = "ENDYEAST";
-            LinesList.Add(TempLine);
-            TempLine = "ADJUNCTS";
-            LinesList.Add(TempLine);
-            i = 0;
-            foreach (string labname in YeastLabList)
-            {
-                TempLine = OtherIngredientName[i] + "\t" + OtherIngredientAmount[i] + "\t" + OtherIngredientType[i];
-                i++;
-                LinesList.Add(TempLine);
-            }
-            TempLine = "ENDADJUNCTS";
-            LinesList.Add(TempLine);
-            TempLine = "ENDRECIPE";
-            LinesList.Add(TempLine);
-            String FilePath = RecipeFileLocation + "\\" + BeerName + ".txt";
-            using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(FilePath))
-            {
-                foreach (string line in LinesList)
+                string response = handler.postFermentableAddition(f);
+                if(response == "false")
                 {
-                    file.WriteLine(line);
+                    reload = true;
                 }
             }
-            RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister", true);
-            if (adsfa != null)
+            foreach (yeastlist y in currentRecipe.yeasts)
             {
-                adsfa.SetValue("LastOpenedFileLocation", FilePath);
+                handler.postYeastAddition(y);
             }
-            else
+            foreach (adjunctList a in currentRecipe.adjuncts)
             {
-                adsfa = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE/Brewmeister");
-                adsfa.SetValue("LastOpenedFileLocation", FilePath);
+                handler.postAdjunctAddition(a);
             }
-            adsfa.Close();
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-
+            handler.postRecipe(currentRecipe);
+            if(reload)
+            {
+                currentRecipe = handler.loadRecipe(currentRecipe.id);
+                populateGrids();
+               // RefreshStatistics();
+            }
         }
 
         #endregion
@@ -506,7 +448,8 @@ namespace Brewcrosoft_Brewmeister
         {
             APIHandler handler = new APIHandler();
             fermentablelist add = new fermentablelist();
-            add.id = selectedMalt;
+           // add.id = selectedMalt;
+            add.fermentableID = selectedMalt;
             add.fermentable = handler.getFermentable(selectedMalt);
             add.recipeID = currentRecipe.id;
             currentRecipe.fermentables.Add(add);
@@ -583,7 +526,8 @@ namespace Brewcrosoft_Brewmeister
         {
             APIHandler handler = new APIHandler();
             yeastlist add = new yeastlist();
-            add.ID = selectedYeast;
+         //   add.ID = selectedYeast;
+            add.yeastID = selectedYeast;
             add.yeast = handler.getYeast(selectedYeast);
             add.recipeID = currentRecipe.id;
             currentRecipe.yeasts.Add(add);
@@ -612,7 +556,8 @@ namespace Brewcrosoft_Brewmeister
         {
             APIHandler handler = new APIHandler();
             adjunctList add = new adjunctList();
-            add.id = selectedAdjunct;
+       //     add.id = selectedAdjunct;
+            add.adjunctID = selectedAdjunct;
             add.adjunct = handler.getAdjunct(selectedAdjunct);
             add.recipeID = currentRecipe.id;
             currentRecipe.adjuncts.Add(add);
@@ -634,7 +579,15 @@ namespace Brewcrosoft_Brewmeister
         }
 
         #endregion
-        
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int index = OtherIngredientsGrid.CurrentRow.Index;
+            OtherIngredientsGrid.Rows.Clear();
+            currentRecipe.adjuncts.RemoveAt(index);
+            populateGrids();
+            RefreshStatistics();
+        }
     }
 }
 

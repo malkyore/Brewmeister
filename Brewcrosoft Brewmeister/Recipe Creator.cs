@@ -20,41 +20,42 @@ namespace Brewcrosoft_Brewmeister
         public string BeerDescription { get; set; }
         public string RecipeFileLocation { get; set; }
         public string IngredientFileLocation { get; set; }
-
+        public static recipe2 currentRecipe = new recipe2();
         //lists of shit
         //Malt Lists
-        public List<String> MaltNameList = new List<string>();
-        public List<float> PPGList = new List<float>();
-        public List<float> ColorList = new List<float>();
-        public List<float> WeightList = new List<float>();
-        public List<Boolean> ExtractList = new List<Boolean>();
-        //Hop Lists
-        public List<String> HopNameList = new List<String>();
-        public List<float> AAUList = new List<float>();
-        public List<float> HopTimeList = new List<float>();
-        public List<float> HopAmountList = new List<float>();
-        public List<String> HopTypeList = new List<String>();
-        //Yeast Lists
-        public List<String> YeastLabList = new List<String>();
-        public List<String> YeastProductList = new List<String>();
-        public List<float> YeastTempRangeStartList = new List<float>();
-        public List<float> YeastTempRangeEndList = new List<float>();
-        public List<float> YeastAttenuationList = new List<float>();
-        public List<String> YeastAlcoholToleranceList = new List<String>();
-        public List<String> YeastTypeList = new List<String>();
-        public List<String> YeastFlocculationList = new List<String>();
-
-        //Other Ingredients Lists
-        public List<String> OtherIngredientName = new List<String>();
-        public List<float> OtherIngredientAmount = new List<float>();
-        public List<String> OtherIngredientType = new List<String>();
-        recipe2 currentRecipe = new recipe2();
+        // public List<String> MaltNameList = new List<string>();
+        // public List<float> PPGList = new List<float>();
+        // public List<float> ColorList = new List<float>();
+        // public List<float> WeightList = new List<float>();
+        // public List<Boolean> ExtractList = new List<Boolean>();
+        // //Hop Lists
+        // public List<String> HopNameList = new List<String>();
+        // public List<float> AAUList = new List<float>();
+        // public List<float> HopTimeList = new List<float>();
+        // public List<float> HopAmountList = new List<float>();
+        // public List<String> HopTypeList = new List<String>();
+        // //Yeast Lists
+        // public List<String> YeastLabList = new List<String>();
+        // public List<String> YeastProductList = new List<String>();
+        // public List<float> YeastTempRangeStartList = new List<float>();
+        // public List<float> YeastTempRangeEndList = new List<float>();
+        // public List<float> YeastAttenuationList = new List<float>();
+        // public List<String> YeastAlcoholToleranceList = new List<String>();
+        // public List<String> YeastTypeList = new List<String>();
+        // public List<String> YeastFlocculationList = new List<String>();
+        //
+        // //Other Ingredients Lists
+        // public List<String> OtherIngredientName = new List<String>();
+        // public List<float> OtherIngredientAmount = new List<float>();
+        // public List<String> OtherIngredientType = new List<String>();
+        // 
         //Statistical information
         public float PPGPoints = 0;
         public float SRM = 0;
         public double CurrentOG = 0;
         public double CurrentFG = 0;
         public double CurrentABV = 0;
+        public string dataurl;
         //The below value adjusts the time component of the IBU calculation
         //It can adjust for boil of from more or less vigorous boils over time
         public double IBUBoilTimeCurveFit = -0.04;
@@ -72,7 +73,7 @@ namespace Brewcrosoft_Brewmeister
         /*
          * Sets all the fucking shit for the grids and shit.
          * */
-        public Recipe_Creator(recipe2 currentRecipeFromMainScreen)
+        public Recipe_Creator()
         {
             APIHandler handler = new APIHandler();
             List<fermentable2> fermentableList = handler.getFermentables();
@@ -80,7 +81,7 @@ namespace Brewcrosoft_Brewmeister
             maltColumn.DataSource = fermentableList;
             maltColumn.DisplayMember = "name";
             maltColumn.ValueMember = "id";
-            currentRecipe = currentRecipeFromMainScreen;
+            //currentRecipe = currentRecipeFromMainScreen;
            //Malt Grid Stuff
             InitializeComponent();
             //MaltGrid.Columns.Add(maltColumn);
@@ -145,8 +146,59 @@ namespace Brewcrosoft_Brewmeister
             OtherIngredientsGrid.Columns.Add("TimeUnit", "TimeUnit");
             OtherIngredientsGrid.Columns.Add("Type", "Type");
 
+            
+            RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister");
+            if (adsfa != null)
+            {
+                dataurl = "" + adsfa.GetValue("dataurl");
+                string currentRecipeKey = "" + adsfa.GetValue("LastOpenedRecipe");
+                try
+                {
+                    //LastOpenedFileLocation = "" + adsfa.GetValue("LastOpenedFileLocation");
+                    //openFile(LastOpenedFileLocation);
+                    adsfa.Close();
+                    currentRecipe = handler.loadRecipe(currentRecipeKey);
+                    populateGrids();
+                    RefreshStatistics();
+                }
+                catch (Exception esdjjs)
+                {
+
+                }
+
+            }
+            else
+            {
+                API_URL_Settings settings = new API_URL_Settings();
+                settings.ShowDialog();
+                dataurl = settings.restAPIURL;
+                adsfa = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE/Brewmeister");
+                adsfa.SetValue("dataurl", dataurl);
+                adsfa.SetValue("LastOpenedRecipe", "");
+                adsfa.Close();
+            }
+
+
+
+
             populateGrids();
             RefreshStatistics();
+        }
+
+        private void viewRecipesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            View_Recipes recipeViewer = new View_Recipes();
+            APIHandler handler = new APIHandler();
+            //recipeViewer.dataurl = dataurl;
+            recipeViewer.ShowDialog();
+            string currentRecipeKey = recipeViewer.currentSelectedRecipe;
+            if (currentRecipeKey != null)
+            {
+                currentRecipe = null;
+                currentRecipe = handler.loadRecipe(currentRecipeKey);
+                populateGrids();
+                RefreshStatistics();
+            }
         }
 
         /*
@@ -155,9 +207,13 @@ namespace Brewcrosoft_Brewmeister
         private void populateGrids()
         {
             MaltGrid.Rows.Clear();
+            MaltGrid.DataSource = null;
             HopGrid.Rows.Clear();
+            HopGrid.DataSource = null;
             YeastGrid.Rows.Clear();
+            YeastGrid.DataSource = null;
             OtherIngredientsGrid.Rows.Clear();
+            OtherIngredientsGrid.DataSource = null;
             //Populate Screen
             BeerNameLabel.Text = currentRecipe.name;
             BeerStyleLabel.Text = currentRecipe.style;
@@ -213,71 +269,25 @@ namespace Brewcrosoft_Brewmeister
     * */
         public void RefreshStatistics()
         {
-            double PPGCalc = 0;
-            double SRMCalc = 0;
-            double IBUCalc = 0;
+            BeerStats stats = BeerMath.calculateStatistics(currentRecipe,IntoFermenterVolume,IBUBoilTimeCurveFit,KitEfficiency);
 
-            //IBU Math Variables
-            double fG = 0;
-            double fT = 0;
-            double Util = 0;
-
-            int i = 0;
-            foreach (fermentablelist f in currentRecipe.fermentables)
-            {
-                PPGCalc += f.fermentable.ppg * f.weight;
-                SRMCalc += f.fermentable.color * f.weight;
-            }
-
-            foreach (hoplist h in currentRecipe.hops)
-            {
-                if (h.type == "Boil")
-                {
-                    //Where the shit is CurrentOG Set at this point?!?
-                    fG = 1.65 * (Math.Pow(0.000125, (CurrentOG - 1)));
-                    fT = (1 - Math.Pow(Math.E, IBUBoilTimeCurveFit * h.time)) / 4.15;
-                    Util = fG * fT;
-                    IBUCalc += ((h.amount * h.hop.aau) * Util * 74.89) / IntoFermenterVolume;
-                }
-            }
-
-            //Final Gravity Estimate based off of the average of the attenuations of the added yeasts
-            int yeastCount = 0;
-            float attenuationTotal = 0;
-            foreach (yeastlist y in currentRecipe.yeasts)
-            {
-                yeastCount += 1;
-                attenuationTotal += y.yeast.attenuation;
-            }
-
-            float finalAttenuation = attenuationTotal / yeastCount;
-            CurrentFG = 1 + (((CurrentOG - 1) * 1000) * ((100 - finalAttenuation) / 100)) / 1000;
-
-            //calculate ABV
-            CurrentABV = (CurrentOG - CurrentFG) * 131.25;
-            if (CurrentABV > 10)
-            {
-                CurrentABV = (76.08 * (CurrentOG - CurrentFG) / (1.775 - CurrentOG)) * (CurrentFG / 0.794);
-            }
+            currentRecipe.abv = (float)stats.CurrentABV;
+            currentRecipe.srm = stats.SRM;
+            currentRecipe.og = (float)stats.CurrentOG;
+            currentRecipe.fg = (float)stats.CurrentFG;
+            currentRecipe.ibu = stats.IBU;
 
             //update the statistics box
-            RawPPGLabel.Text = "" + PPGCalc;
-            PPGCalc = PPGCalc * KitEfficiency;
-            SRMCalc = 1.4922 * (Math.Pow(SRMCalc / IntoFermenterVolume, 0.69));
-            GravityPointsLabel.Text = "" + PPGCalc;
-            CurrentOG = (1 + (PPGCalc / IntoFermenterVolume) / 1000);
+            RawPPGLabel.Text = "" + stats.PPGPoints;
+            GravityPointsLabel.Text = "" + stats.adjustedPPGPoints;
+            OGLabel.Text = "" + Math.Round(stats.CurrentOG, 3);
+            FGLabel.Text = "" + Math.Round(stats.CurrentFG, 3);
+            SRMLabel.Text = "" + Math.Round(stats.SRM, 0);
+            IBULabel.Text = "" + Math.Round(stats.IBU, 0);
+            ABVLabel.Text = "" + Math.Round(stats.CurrentABV, 1);
 
-            OGLabel.Text = "" + CurrentOG;
-            FGLabel.Text = "" + CurrentFG;
-            SRMLabel.Text = "" + SRMCalc;
-            IBULabel.Text = "" + IBUCalc;
-            ABVLabel.Text = "" + CurrentABV;
-
-            currentRecipe.abv = (float)CurrentABV;
-            currentRecipe.fg = (float)CurrentFG;
-            currentRecipe.og = (float)CurrentOG;
-            currentRecipe.srm = (float)SRMCalc;
-            currentRecipe.ibu = (float)IBUCalc;
+            Color srmColor = System.Drawing.ColorTranslator.FromHtml(BeerMath.srmLookup(currentRecipe.srm));
+            SRMSimulator.BackColor = srmColor;
 
             KitEfficiencyBox.Text = "" + KitEfficiency;
             IntoFermenterVolumeBox.Text = "" + IntoFermenterVolume;
@@ -300,7 +310,8 @@ namespace Brewcrosoft_Brewmeister
                     MessageBox.Show("Error in Fermetner Volume.  Please Reenter.");
                     IntoFermenterVolumeBox.Text = "" + IntoFermenterVolume;
                 }
-                PopulateYeastList();
+                //PopulateYeastList();
+                populateGrids();
                 RefreshStatistics();
             }
         }
@@ -321,13 +332,14 @@ namespace Brewcrosoft_Brewmeister
                     MessageBox.Show("Error in Kit Effiency.  Please Reenter.");
                     KitEfficiencyBox.Text = "" + KitEfficiency;
                 }
-                PopulateYeastList();
+                //   PopulateYeastList();
+                populateGrids();
                 RefreshStatistics();
             }
         }
 
         /*
-         * The shittiest oldest least-working code I've ever saw.
+         * Saves the information entered in the grids
          * */
         private void SaveButton_Click(object sender, EventArgs e)
         {
@@ -481,17 +493,17 @@ namespace Brewcrosoft_Brewmeister
         /*
          * populates the yeast list.
          * */
-        public void PopulateYeastList()
-        {
-            YeastGrid.Rows.Clear();
-            int i = 0;
-            foreach (string element in YeastLabList)
-            {
-                YeastGrid.Rows.Add(YeastLabList[i], YeastProductList[i], YeastAttenuationList[i]);
-                i++;
-            }
-
-        }
+      //  public void PopulateYeastList()
+      //  {
+      //      YeastGrid.Rows.Clear();
+      //      int i = 0;
+      //      foreach (string element in YeastLabList)
+      //      {
+      //          YeastGrid.Rows.Add(YeastLabList[i], YeastProductList[i], YeastAttenuationList[i]);
+      //          i++;
+      //      }
+      //
+      //  }
 
 
         /*
@@ -566,17 +578,17 @@ namespace Brewcrosoft_Brewmeister
         /*
          * populates the adjuncts grid.
          * */
-        public void PopulateOtherList()
-        {
-            OtherIngredientsGrid.Rows.Clear();
-            int i = 0;
-            foreach (string element in OtherIngredientName)
-            {
-                OtherIngredientsGrid.Rows.Add(OtherIngredientName[i],OtherIngredientAmount[i],OtherIngredientType[i]);
-                i++;
-            }
-
-        }
+     //   public void PopulateOtherList()
+     //   {
+     //       OtherIngredientsGrid.Rows.Clear();
+     //       int i = 0;
+     //       foreach (string element in OtherIngredientName)
+     //       {
+     //           OtherIngredientsGrid.Rows.Add(OtherIngredientName[i],OtherIngredientAmount[i],OtherIngredientType[i]);
+     //           i++;
+     //       }
+     //
+     //   }
 
         #endregion
 
@@ -587,6 +599,48 @@ namespace Brewcrosoft_Brewmeister
             currentRecipe.adjuncts.RemoveAt(index);
             populateGrids();
             RefreshStatistics();
+        }
+
+        private void SRMLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void GravityPointsLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void RawPPGLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void newRecipeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var newBeer = new New_Beer())
+            {
+                var result = newBeer.ShowDialog(); ;
+                recipe2 newRecipe = new recipe2();
+                if (result == DialogResult.OK)
+                {
+                    newRecipe.name = newBeer.BeerName;
+                    newRecipe.style = newBeer.BeerStyle;
+                    newRecipe.description = newBeer.BeerDescription;
+                    APIHandler handler = new APIHandler();
+                    handler.postRecipe(newRecipe);
+                }
+            }
         }
     }
 }

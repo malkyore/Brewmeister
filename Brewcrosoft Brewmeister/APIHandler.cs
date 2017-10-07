@@ -21,6 +21,9 @@ namespace Brewcrosoft_Brewmeister
         
         public List<loadedRecipe> loadRecipes(string jsonurl)
         {
+            RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister");
+            string dataurl = (string)adsfa.GetValue("dataurl");
+            jsonurl = dataurl + "/recipe";
             List<loadedRecipe> recipeList = new List<loadedRecipe>();
             var json = new WebClient().DownloadString(jsonurl);
             var objects = JArray.Parse(json);

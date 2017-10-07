@@ -16,7 +16,8 @@ namespace Brewcrosoft_Brewmeister
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new HomeScreen());
+            //Application.Run(new HomeScreen());
+            Application.Run(new Recipe_Creator());
         }
     }
 }

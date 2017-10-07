@@ -102,6 +102,7 @@
     </Compile>
     <Compile Include="APIHandler.cs" />
     <Compile Include="BeerData.cs" />
+    <Compile Include="BeerMath.cs" />
     <Compile Include="FileLocationSettings.cs">
       <SubType>Form</SubType>
     </Compile>

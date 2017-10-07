@@ -16,14 +16,6 @@ namespace Brewcrosoft_Brewmeister.Data
             public float ibu;
 
         }
-    //public class hop
-    //{
-    //    public String hopName;
-    //    public float AAU;
-    //    public float hopTime;
-    //    public float hopAmount;
-    //    public string hopType;
-    //}
 
     public class fermentable
     {
@@ -100,10 +92,6 @@ namespace Brewcrosoft_Brewmeister.Data
         public float srm;
         public string id;
         public string test;
-      //  public List<yeastlist> yeasts = new List<yeastlist>();
-      //  public List<fermentablelist> fermentables = new List<fermentablelist>();
-      //  public List<adjunctList> adjuncts = new List<adjunctList>();
-      //  public List<hoplist> hops = new List<hoplist>();
 
         public List<yeastlist> yeasts = new List<yeastlist>();
         public List<fermentablelist> fermentables = new List<fermentablelist>();
@@ -112,16 +100,19 @@ namespace Brewcrosoft_Brewmeister.Data
 
         public BeerStats beerStatistics = new BeerStats();
 
-        public class BeerStats
-        {
-            public float PPGPoints;
-            public float SRM;
-            public double CurrentOG;
-            public double CurrentFG;
-            public double CurrentABV;
-            public double KitEfficiency;
-            public float IntoFermenterVolume;
-        }
+    }
+
+    public class BeerStats
+    {
+        public float PPGPoints;
+        public float adjustedPPGPoints;
+        public float SRM;
+        public float IBU;
+        public double CurrentOG;
+        public double CurrentFG;
+        public double CurrentABV;
+        public double KitEfficiency;
+        public float IntoFermenterVolume;
     }
 
     public class yeastlist

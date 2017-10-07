@@ -105,7 +105,7 @@ namespace Brewcrosoft_Brewmeister
 
         private void OpenRecipeCreator_Click(object sender, EventArgs e)
         {
-            Recipe_Creator recipemaker = new Recipe_Creator(currentRecipe);
+            Recipe_Creator recipemaker = new Recipe_Creator();
             var result = recipemaker.ShowDialog();
             if (result == DialogResult.OK)
             {

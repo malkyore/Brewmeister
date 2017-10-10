@@ -17,6 +17,26 @@ namespace Brewcrosoft_Brewmeister.Data
 
         }
 
+    public class style
+    {
+        public string id;
+        public string name;
+        public string type;
+        public string description;
+        public float minOG;
+        public float maxOG;
+        public float minFG;
+        public float maxFG;
+        public float minIBU;
+        public float maxIBU;
+        public float minABV;
+        public float maxABV;
+        public float minSRM;
+        public float maxSRM;
+        public float minCarb;
+        public float maxCarb;
+    }
+
     public class fermentable
     {
         public string fermentableName;
@@ -84,6 +104,7 @@ namespace Brewcrosoft_Brewmeister.Data
     {
         public string name;
         public string style;
+        public string styleID;
         public string description;
         public float abv;
         public float ibu;

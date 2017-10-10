@@ -206,6 +206,7 @@ namespace Brewcrosoft_Brewmeister
          * */
         private void populateGrids()
         {
+            APIHandler handler = new APIHandler();
             MaltGrid.Rows.Clear();
             MaltGrid.DataSource = null;
             HopGrid.Rows.Clear();
@@ -215,8 +216,11 @@ namespace Brewcrosoft_Brewmeister
             OtherIngredientsGrid.Rows.Clear();
             OtherIngredientsGrid.DataSource = null;
             //Populate Screen
+            updateStyleSliders();
             BeerNameLabel.Text = currentRecipe.name;
-            BeerStyleLabel.Text = currentRecipe.style;
+
+
+
             foreach (fermentablelist f in currentRecipe.fermentables)
             {
                 bool extract = false;
@@ -241,6 +245,7 @@ namespace Brewcrosoft_Brewmeister
          * */
         private void BackPopulateRecipeFromGridChange()
         {
+            
             for (int i = 0; i < HopGrid.RowCount; i++)
             {
                 if (currentRecipe.hops.Count > i)
@@ -260,6 +265,7 @@ namespace Brewcrosoft_Brewmeister
                 }
            
             }
+            
         }
 
         /*
@@ -291,8 +297,87 @@ namespace Brewcrosoft_Brewmeister
 
             KitEfficiencyBox.Text = "" + KitEfficiency;
             IntoFermenterVolumeBox.Text = "" + IntoFermenterVolume;
+            updateStyleSliders();
         }
+        private void updateStyleSliders()
+        {
+            APIHandler handler = new APIHandler();
+            try
+            {
+                //OG Stuff
+                style currentStyle = handler.getStyle(currentRecipe.styleID);
+                BeerStyleLabel.Text = currentStyle.name;
+                minOGLabel.Text = "" + currentStyle.minOG;
+                maxOGLabel.Text = "" + currentStyle.maxOG;
+                ogSlider.Minimum = 0;
+                ogSlider.Maximum = 100;
+                float OGSliderAdjustmentFactor = 100 / (currentStyle.maxOG-currentStyle.minOG);
+                int currentOGSliderPosition = (int)((currentRecipe.og-currentStyle.minOG)*OGSliderAdjustmentFactor);
+                if (currentOGSliderPosition > 100)
+                    currentOGSliderPosition = 100;
+                else if (currentOGSliderPosition < 0)
+                    currentOGSliderPosition = 0;
+                ogSlider.Value = currentOGSliderPosition;
+                ogSlider.Refresh();
+                //FG Stuff
+                minFGLabel.Text = "" + currentStyle.minFG;
+                maxFGLabel.Text = "" + currentStyle.maxFG;
+                fgSlider.Minimum = 0;
+                fgSlider.Maximum = 100;
+                float FGSliderAdjustmentFactor = 100 / (currentStyle.maxFG - currentStyle.minFG);
+                int currentFGSliderPosition = (int)((currentRecipe.fg - currentStyle.minFG) * FGSliderAdjustmentFactor);
+                if (currentFGSliderPosition > 100)
+                    currentFGSliderPosition = 100;
+                else if (currentFGSliderPosition < 0)
+                    currentFGSliderPosition = 0;
+                fgSlider.Value = currentFGSliderPosition;
+                fgSlider.Refresh();
+                //IBU Stuff
+                minIBULabel.Text = "" + currentStyle.minIBU;
+                maxIBULabel.Text = "" + currentStyle.maxIBU;
+                ibuSlider.Minimum = 0;
+                ibuSlider.Maximum = 100;
+                float IBUSliderAdjustmentFactor = 100 / (currentStyle.maxIBU - currentStyle.minIBU);
+                int currentIBUSliderPosition = (int)((currentRecipe.ibu - currentStyle.minIBU) * IBUSliderAdjustmentFactor);
+                if (currentIBUSliderPosition > 100)
+                    currentIBUSliderPosition = 100;
+                else if (currentIBUSliderPosition < 0)
+                    currentIBUSliderPosition = 0;
+                ibuSlider.Value = currentIBUSliderPosition;
+                ibuSlider.Refresh();
+                //SRM Stuff
+                minSRMLabel.Text = "" + currentStyle.minSRM;
+                maxSRMLabel.Text = "" + currentStyle.maxSRM;
+                srmSlider.Minimum = 0;
+                srmSlider.Maximum = 100;
+                float SRMSliderAdjustmentFactor = 100 / (currentStyle.maxSRM - currentStyle.minSRM);
+                int currentSRMSliderPosition = (int)((currentRecipe.srm - currentStyle.minSRM) * SRMSliderAdjustmentFactor);
+                if (currentSRMSliderPosition > 100)
+                    currentSRMSliderPosition = 100;
+                else if (currentSRMSliderPosition < 0)
+                    currentSRMSliderPosition = 0;
+                srmSlider.Value = currentSRMSliderPosition;
+                srmSlider.Refresh();
+                //ABV Stuff
+                minABVLabel.Text = "" + currentStyle.minABV;
+                maxABVLabel.Text = "" + currentStyle.maxABV;
+                abvSlider.Minimum = 0;
+                abvSlider.Maximum = 100;
+                float ABVSliderAdjustmentFactor = 100 / (currentStyle.maxABV - currentStyle.minABV);
+                int currentABVSliderPosition = (int)((currentRecipe.abv - currentStyle.minABV) * ABVSliderAdjustmentFactor);
+                if (currentABVSliderPosition > 100)
+                    currentABVSliderPosition = 100;
+                else if (currentABVSliderPosition < 0)
+                    currentABVSliderPosition = 0;
+                abvSlider.Value = currentABVSliderPosition;
+                abvSlider.Refresh();
 
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
         /*
        * IDK.... this might still work.  It recalculates the information based
        * on changes to the into-fermenter volume.
@@ -639,6 +724,27 @@ namespace Brewcrosoft_Brewmeister
                     newRecipe.description = newBeer.BeerDescription;
                     APIHandler handler = new APIHandler();
                     handler.postRecipe(newRecipe);
+                }
+            }
+        }
+
+        private void ingredientManagerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IngredientManager manager = new IngredientManager();
+            manager.Show();
+        }
+
+        private void BeerStyleLabel_Click(object sender, EventArgs e)
+        {
+            APIHandler handler = new APIHandler();
+            using (var MaltDialog = new IngredientPicker("Style"))
+            {
+                var result = MaltDialog.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    currentRecipe.styleID = MaltDialog.selectedKey;
+                    currentRecipe.style = handler.getStyle(MaltDialog.selectedKey).name;
+                    populateGrids();
                 }
             }
         }

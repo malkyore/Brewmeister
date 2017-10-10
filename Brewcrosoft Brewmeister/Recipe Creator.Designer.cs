@@ -41,6 +41,8 @@
             this.AddHopsButton = new System.Windows.Forms.Button();
             this.HopGrid = new System.Windows.Forms.DataGridView();
             this.RecipeStatsBox = new System.Windows.Forms.GroupBox();
+            this.maxOGLabel = new System.Windows.Forms.Label();
+            this.minOGLabel = new System.Windows.Forms.Label();
             this.SRMSimulator = new System.Windows.Forms.TextBox();
             this.FGLabel = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
@@ -56,6 +58,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.KitEfficiencyBox = new System.Windows.Forms.TextBox();
+            this.ogSlider = new System.Windows.Forms.TrackBar();
             this.RawPPGLabel = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.GravityPointsLabel = new System.Windows.Forms.Label();
@@ -68,6 +71,8 @@
             this.newRecipeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openRecipeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveRecipeToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ingredientManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BeerNameLabel = new System.Windows.Forms.Label();
             this.BeerStyleLabel = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -76,6 +81,18 @@
             this.AddOtherIngredientsButton = new System.Windows.Forms.Button();
             this.OtherIngredientsGrid = new System.Windows.Forms.DataGridView();
             this.SaveButton = new System.Windows.Forms.Button();
+            this.maxFGLabel = new System.Windows.Forms.Label();
+            this.minFGLabel = new System.Windows.Forms.Label();
+            this.fgSlider = new System.Windows.Forms.TrackBar();
+            this.maxIBULabel = new System.Windows.Forms.Label();
+            this.minIBULabel = new System.Windows.Forms.Label();
+            this.ibuSlider = new System.Windows.Forms.TrackBar();
+            this.maxSRMLabel = new System.Windows.Forms.Label();
+            this.minSRMLabel = new System.Windows.Forms.Label();
+            this.srmSlider = new System.Windows.Forms.TrackBar();
+            this.maxABVLabel = new System.Windows.Forms.Label();
+            this.minABVLabel = new System.Windows.Forms.Label();
+            this.abvSlider = new System.Windows.Forms.TrackBar();
             this.YeastBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.YeastGrid)).BeginInit();
             this.MaltGroup.SuspendLayout();
@@ -83,9 +100,14 @@
             this.HopGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.HopGrid)).BeginInit();
             this.RecipeStatsBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ogSlider)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OtherIngredientsGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fgSlider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ibuSlider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.srmSlider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.abvSlider)).BeginInit();
             this.SuspendLayout();
             // 
             // YeastBox
@@ -235,6 +257,20 @@
             // 
             // RecipeStatsBox
             // 
+            this.RecipeStatsBox.Controls.Add(this.maxABVLabel);
+            this.RecipeStatsBox.Controls.Add(this.minABVLabel);
+            this.RecipeStatsBox.Controls.Add(this.abvSlider);
+            this.RecipeStatsBox.Controls.Add(this.maxSRMLabel);
+            this.RecipeStatsBox.Controls.Add(this.minSRMLabel);
+            this.RecipeStatsBox.Controls.Add(this.srmSlider);
+            this.RecipeStatsBox.Controls.Add(this.maxIBULabel);
+            this.RecipeStatsBox.Controls.Add(this.minIBULabel);
+            this.RecipeStatsBox.Controls.Add(this.ibuSlider);
+            this.RecipeStatsBox.Controls.Add(this.maxFGLabel);
+            this.RecipeStatsBox.Controls.Add(this.minFGLabel);
+            this.RecipeStatsBox.Controls.Add(this.fgSlider);
+            this.RecipeStatsBox.Controls.Add(this.maxOGLabel);
+            this.RecipeStatsBox.Controls.Add(this.minOGLabel);
             this.RecipeStatsBox.Controls.Add(this.SRMSimulator);
             this.RecipeStatsBox.Controls.Add(this.FGLabel);
             this.RecipeStatsBox.Controls.Add(this.label11);
@@ -250,6 +286,7 @@
             this.RecipeStatsBox.Controls.Add(this.label4);
             this.RecipeStatsBox.Controls.Add(this.label1);
             this.RecipeStatsBox.Controls.Add(this.KitEfficiencyBox);
+            this.RecipeStatsBox.Controls.Add(this.ogSlider);
             this.RecipeStatsBox.Location = new System.Drawing.Point(1850, 72);
             this.RecipeStatsBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.RecipeStatsBox.Name = "RecipeStatsBox";
@@ -259,9 +296,27 @@
             this.RecipeStatsBox.TabStop = false;
             this.RecipeStatsBox.Text = "Recipe Statistics";
             // 
+            // maxOGLabel
+            // 
+            this.maxOGLabel.AutoSize = true;
+            this.maxOGLabel.Location = new System.Drawing.Point(383, 102);
+            this.maxOGLabel.Name = "maxOGLabel";
+            this.maxOGLabel.Size = new System.Drawing.Size(38, 20);
+            this.maxOGLabel.TabIndex = 20;
+            this.maxOGLabel.Text = "max";
+            // 
+            // minOGLabel
+            // 
+            this.minOGLabel.AutoSize = true;
+            this.minOGLabel.Location = new System.Drawing.Point(12, 102);
+            this.minOGLabel.Name = "minOGLabel";
+            this.minOGLabel.Size = new System.Drawing.Size(34, 20);
+            this.minOGLabel.TabIndex = 19;
+            this.minOGLabel.Text = "min";
+            // 
             // SRMSimulator
             // 
-            this.SRMSimulator.Location = new System.Drawing.Point(150, 127);
+            this.SRMSimulator.Location = new System.Drawing.Point(153, 345);
             this.SRMSimulator.Name = "SRMSimulator";
             this.SRMSimulator.Size = new System.Drawing.Size(100, 26);
             this.SRMSimulator.TabIndex = 18;
@@ -270,7 +325,7 @@
             // 
             this.FGLabel.AutoSize = true;
             this.FGLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FGLabel.Location = new System.Drawing.Point(98, 56);
+            this.FGLabel.Location = new System.Drawing.Point(100, 125);
             this.FGLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.FGLabel.Name = "FGLabel";
             this.FGLabel.Size = new System.Drawing.Size(31, 32);
@@ -281,7 +336,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(8, 56);
+            this.label11.Location = new System.Drawing.Point(10, 125);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(65, 32);
@@ -292,7 +347,7 @@
             // 
             this.ABVLabel.AutoSize = true;
             this.ABVLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ABVLabel.Location = new System.Drawing.Point(100, 156);
+            this.ABVLabel.Location = new System.Drawing.Point(108, 443);
             this.ABVLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.ABVLabel.Name = "ABVLabel";
             this.ABVLabel.Size = new System.Drawing.Size(31, 32);
@@ -303,7 +358,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(8, 156);
+            this.label9.Location = new System.Drawing.Point(16, 443);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(84, 32);
@@ -314,7 +369,7 @@
             // 
             this.IBULabel.AutoSize = true;
             this.IBULabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.IBULabel.Location = new System.Drawing.Point(100, 90);
+            this.IBULabel.Location = new System.Drawing.Point(102, 240);
             this.IBULabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.IBULabel.Name = "IBULabel";
             this.IBULabel.Size = new System.Drawing.Size(31, 32);
@@ -325,7 +380,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(8, 90);
+            this.label7.Location = new System.Drawing.Point(10, 240);
             this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(73, 32);
@@ -377,7 +432,7 @@
             // 
             this.SRMLabel.AutoSize = true;
             this.SRMLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SRMLabel.Location = new System.Drawing.Point(100, 123);
+            this.SRMLabel.Location = new System.Drawing.Point(103, 341);
             this.SRMLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.SRMLabel.Name = "SRMLabel";
             this.SRMLabel.Size = new System.Drawing.Size(31, 32);
@@ -389,7 +444,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(8, 123);
+            this.label4.Location = new System.Drawing.Point(11, 341);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(89, 32);
@@ -414,6 +469,13 @@
             this.KitEfficiencyBox.Size = new System.Drawing.Size(182, 26);
             this.KitEfficiencyBox.TabIndex = 0;
             this.KitEfficiencyBox.TextChanged += new System.EventHandler(this.ChangeKitEfficiency);
+            // 
+            // ogSlider
+            // 
+            this.ogSlider.Location = new System.Drawing.Point(13, 59);
+            this.ogSlider.Name = "ogSlider";
+            this.ogSlider.Size = new System.Drawing.Size(430, 69);
+            this.ogSlider.TabIndex = 21;
             // 
             // RawPPGLabel
             // 
@@ -468,7 +530,8 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.recipesToolStripMenuItem});
+            this.recipesToolStripMenuItem,
+            this.toolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(9, 3, 0, 3);
@@ -527,6 +590,21 @@
             this.saveRecipeToolStripMenuItem1.Size = new System.Drawing.Size(196, 30);
             this.saveRecipeToolStripMenuItem1.Text = "SaveRecipe";
             // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ingredientManagerToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // ingredientManagerToolStripMenuItem
+            // 
+            this.ingredientManagerToolStripMenuItem.Name = "ingredientManagerToolStripMenuItem";
+            this.ingredientManagerToolStripMenuItem.Size = new System.Drawing.Size(252, 30);
+            this.ingredientManagerToolStripMenuItem.Text = "Ingredient Manager";
+            this.ingredientManagerToolStripMenuItem.Click += new System.EventHandler(this.ingredientManagerToolStripMenuItem_Click);
+            // 
             // BeerNameLabel
             // 
             this.BeerNameLabel.AutoSize = true;
@@ -548,6 +626,7 @@
             this.BeerStyleLabel.Size = new System.Drawing.Size(130, 29);
             this.BeerStyleLabel.TabIndex = 4;
             this.BeerStyleLabel.Text = "BeerName";
+            this.BeerStyleLabel.Click += new System.EventHandler(this.BeerStyleLabel_Click);
             // 
             // label5
             // 
@@ -617,6 +696,106 @@
             this.SaveButton.UseVisualStyleBackColor = true;
             this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
+            // maxFGLabel
+            // 
+            this.maxFGLabel.AutoSize = true;
+            this.maxFGLabel.Location = new System.Drawing.Point(384, 217);
+            this.maxFGLabel.Name = "maxFGLabel";
+            this.maxFGLabel.Size = new System.Drawing.Size(38, 20);
+            this.maxFGLabel.TabIndex = 23;
+            this.maxFGLabel.Text = "max";
+            // 
+            // minFGLabel
+            // 
+            this.minFGLabel.AutoSize = true;
+            this.minFGLabel.Location = new System.Drawing.Point(13, 217);
+            this.minFGLabel.Name = "minFGLabel";
+            this.minFGLabel.Size = new System.Drawing.Size(34, 20);
+            this.minFGLabel.TabIndex = 22;
+            this.minFGLabel.Text = "min";
+            // 
+            // fgSlider
+            // 
+            this.fgSlider.Location = new System.Drawing.Point(14, 174);
+            this.fgSlider.Name = "fgSlider";
+            this.fgSlider.Size = new System.Drawing.Size(430, 69);
+            this.fgSlider.TabIndex = 24;
+            // 
+            // maxIBULabel
+            // 
+            this.maxIBULabel.AutoSize = true;
+            this.maxIBULabel.Location = new System.Drawing.Point(397, 318);
+            this.maxIBULabel.Name = "maxIBULabel";
+            this.maxIBULabel.Size = new System.Drawing.Size(38, 20);
+            this.maxIBULabel.TabIndex = 26;
+            this.maxIBULabel.Text = "max";
+            // 
+            // minIBULabel
+            // 
+            this.minIBULabel.AutoSize = true;
+            this.minIBULabel.Location = new System.Drawing.Point(15, 318);
+            this.minIBULabel.Name = "minIBULabel";
+            this.minIBULabel.Size = new System.Drawing.Size(34, 20);
+            this.minIBULabel.TabIndex = 25;
+            this.minIBULabel.Text = "min";
+            // 
+            // ibuSlider
+            // 
+            this.ibuSlider.Location = new System.Drawing.Point(16, 275);
+            this.ibuSlider.Name = "ibuSlider";
+            this.ibuSlider.Size = new System.Drawing.Size(430, 69);
+            this.ibuSlider.TabIndex = 27;
+            // 
+            // maxSRMLabel
+            // 
+            this.maxSRMLabel.AutoSize = true;
+            this.maxSRMLabel.Location = new System.Drawing.Point(397, 420);
+            this.maxSRMLabel.Name = "maxSRMLabel";
+            this.maxSRMLabel.Size = new System.Drawing.Size(38, 20);
+            this.maxSRMLabel.TabIndex = 29;
+            this.maxSRMLabel.Text = "max";
+            // 
+            // minSRMLabel
+            // 
+            this.minSRMLabel.AutoSize = true;
+            this.minSRMLabel.Location = new System.Drawing.Point(15, 420);
+            this.minSRMLabel.Name = "minSRMLabel";
+            this.minSRMLabel.Size = new System.Drawing.Size(34, 20);
+            this.minSRMLabel.TabIndex = 28;
+            this.minSRMLabel.Text = "min";
+            // 
+            // srmSlider
+            // 
+            this.srmSlider.Location = new System.Drawing.Point(16, 377);
+            this.srmSlider.Name = "srmSlider";
+            this.srmSlider.Size = new System.Drawing.Size(430, 69);
+            this.srmSlider.TabIndex = 30;
+            // 
+            // maxABVLabel
+            // 
+            this.maxABVLabel.AutoSize = true;
+            this.maxABVLabel.Location = new System.Drawing.Point(401, 521);
+            this.maxABVLabel.Name = "maxABVLabel";
+            this.maxABVLabel.Size = new System.Drawing.Size(38, 20);
+            this.maxABVLabel.TabIndex = 32;
+            this.maxABVLabel.Text = "max";
+            // 
+            // minABVLabel
+            // 
+            this.minABVLabel.AutoSize = true;
+            this.minABVLabel.Location = new System.Drawing.Point(19, 521);
+            this.minABVLabel.Name = "minABVLabel";
+            this.minABVLabel.Size = new System.Drawing.Size(34, 20);
+            this.minABVLabel.TabIndex = 31;
+            this.minABVLabel.Text = "min";
+            // 
+            // abvSlider
+            // 
+            this.abvSlider.Location = new System.Drawing.Point(20, 478);
+            this.abvSlider.Name = "abvSlider";
+            this.abvSlider.Size = new System.Drawing.Size(430, 69);
+            this.abvSlider.TabIndex = 33;
+            // 
             // Recipe_Creator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -648,10 +827,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.HopGrid)).EndInit();
             this.RecipeStatsBox.ResumeLayout(false);
             this.RecipeStatsBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ogSlider)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.OtherIngredientsGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fgSlider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ibuSlider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.srmSlider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.abvSlider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -707,5 +891,22 @@
         private System.Windows.Forms.ToolStripMenuItem newRecipeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openRecipeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveRecipeToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ingredientManagerToolStripMenuItem;
+        private System.Windows.Forms.Label maxOGLabel;
+        private System.Windows.Forms.Label minOGLabel;
+        private System.Windows.Forms.TrackBar ogSlider;
+        private System.Windows.Forms.Label maxFGLabel;
+        private System.Windows.Forms.Label minFGLabel;
+        private System.Windows.Forms.TrackBar fgSlider;
+        private System.Windows.Forms.Label maxABVLabel;
+        private System.Windows.Forms.Label minABVLabel;
+        private System.Windows.Forms.TrackBar abvSlider;
+        private System.Windows.Forms.Label maxSRMLabel;
+        private System.Windows.Forms.Label minSRMLabel;
+        private System.Windows.Forms.TrackBar srmSlider;
+        private System.Windows.Forms.Label maxIBULabel;
+        private System.Windows.Forms.Label minIBULabel;
+        private System.Windows.Forms.TrackBar ibuSlider;
     }
 }

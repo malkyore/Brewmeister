@@ -148,6 +148,28 @@ namespace Brewcrosoft_Brewmeister
             return returnable;
         }
 
+        public List<style> getStyles()
+        {
+            RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister");
+            string dataurl = (string)adsfa.GetValue("dataurl");
+            string jsonurl = dataurl + "/style";
+            List<style> hopList = new List<style>();
+            var json = new WebClient().DownloadString(jsonurl);
+            hopList = JsonConvert.DeserializeObject<List<style>>(json);
+            return hopList;
+        }
+
+        public style getStyle(string styleID)
+        {
+            RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister");
+            string dataurl = (string)adsfa.GetValue("dataurl");
+            string jsonurl = dataurl + "/style?id=" + styleID;
+            style hopList = new style();
+            var json = new WebClient().DownloadString(jsonurl);
+            hopList = JsonConvert.DeserializeObject<style>(json);
+            return hopList;
+        }
+
         public bool postHopAddition(hoplist hopaddition)
         {
             RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister");
@@ -288,6 +310,7 @@ namespace Brewcrosoft_Brewmeister
             {
                 name = recipe.name,
                 style = recipe.style,
+                styleID = recipe.styleID,
                 description = recipe.description,
                 abv = recipe.abv,
                 ibu = recipe.ibu,

@@ -19,6 +19,7 @@ namespace Brewcrosoft_Brewmeister
         List<fermentable2> fermentableList = new List<fermentable2>();
         List<yeast2> yeastList = new List<yeast2>();
         List<adjunct2> adjunctList = new List<adjunct2>();
+        List<style> styleList = new List<style>();
         public String selectedKey;
         public string versionName;
         public IngredientPicker(string version)
@@ -46,6 +47,10 @@ namespace Brewcrosoft_Brewmeister
                 case "Adjuncts":
                     IngredientGrid.Columns.Add("Name", "Name");
                     break;
+                case "Style":
+                    IngredientGrid.Columns.Add("Name", "Name");
+                    IngredientGrid.Columns.Add("Type", "Type");
+                    break;
             }
             populateGrid();
         }
@@ -69,6 +74,9 @@ namespace Brewcrosoft_Brewmeister
                     break;
                 case "Adjuncts":
                     selectedKey = adjunctList[IngredientGrid.CurrentCell.RowIndex].id;
+                    break;
+                case "Style":
+                    selectedKey = styleList[IngredientGrid.CurrentCell.RowIndex].id;
                     break;
 
             }
@@ -97,6 +105,9 @@ namespace Brewcrosoft_Brewmeister
                 case "Adjuncts":
                     jsonurl = dataurl + "/adjunct";
                     adjunctList = handler.getAdjuncts();
+                    break;
+                case "Style":
+                    styleList = handler.getStyles();
                     break;
             }
             populateGrid();
@@ -134,6 +145,13 @@ namespace Brewcrosoft_Brewmeister
                     foreach (adjunct2 element in adjunctList)
                     {
                         IngredientGrid.Rows.Add(adjunctList[i].name);
+                        i++;
+                    }
+                    break;
+                case "Style":
+                    foreach (style element in styleList)
+                    {
+                        IngredientGrid.Rows.Add(styleList[i].name, styleList[i].type);
                         i++;
                     }
                     break;

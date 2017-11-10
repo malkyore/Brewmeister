@@ -154,6 +154,7 @@
             this.YeastGrid.Name = "YeastGrid";
             this.YeastGrid.Size = new System.Drawing.Size(325, 206);
             this.YeastGrid.TabIndex = 2;
+            this.YeastGrid.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.HopGrid_CellLeave);
             // 
             // MaltGroup
             // 
@@ -198,6 +199,7 @@
             this.MaltGrid.ShowEditingIcon = false;
             this.MaltGrid.Size = new System.Drawing.Size(394, 462);
             this.MaltGrid.TabIndex = 0;
+            this.MaltGrid.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.HopGrid_CellLeave);
             // 
             // HopGroup
             // 
@@ -241,6 +243,7 @@
             this.HopGrid.ShowEditingIcon = false;
             this.HopGrid.Size = new System.Drawing.Size(444, 462);
             this.HopGrid.TabIndex = 1;
+            this.HopGrid.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.HopGrid_CellLeave);
             // 
             // RecipeStatsBox
             // 
@@ -756,6 +759,7 @@
             this.OtherIngredientsGrid.Name = "OtherIngredientsGrid";
             this.OtherIngredientsGrid.Size = new System.Drawing.Size(325, 193);
             this.OtherIngredientsGrid.TabIndex = 2;
+            this.OtherIngredientsGrid.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.HopGrid_CellLeave);
             // 
             // SaveButton
             // 

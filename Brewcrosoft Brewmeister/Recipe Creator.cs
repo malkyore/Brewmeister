@@ -550,7 +550,7 @@ namespace Brewcrosoft_Brewmeister
         {
             BackPopulateRecipeFromGridChange();
             //  PopulateHopList();
-            RefreshStatistics();
+           // RefreshStatistics();
         }
         #endregion
 

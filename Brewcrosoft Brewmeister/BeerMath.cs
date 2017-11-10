@@ -9,69 +9,69 @@ namespace Brewcrosoft_Brewmeister
 {
     public static class BeerMath
     {
-        public static BeerStats calculateStatistics(recipe2 currentRecipe, double IntoFermenterVolume, double IBUBoilTimeCurveFit, double KitEfficiency)
-        {
-            BeerStats beerStats = new BeerStats();
-            double PPGCalc = 0;
-            currentRecipe.srm = 0;
-            currentRecipe.ibu = 0;
-
-            //IBU Math Variables
-            double fG = 0;
-            double fT = 0;
-            double Util = 0;
-
-            int i = 0;
-            foreach (fermentablelist f in currentRecipe.fermentables)
-            {
-                PPGCalc += f.fermentable.ppg * f.weight;
-                currentRecipe.srm += f.fermentable.color * f.weight;
-            }
-            currentRecipe.og = (float)(1 + (PPGCalc / IntoFermenterVolume) / 1000);
-
-            foreach (hoplist h in currentRecipe.hops)
-            {
-                if (h.type == "Boil")
-                {
-                    fG = 1.65 * (Math.Pow(0.000125, (currentRecipe.og - 1)));
-                    fT = (1 - Math.Pow(Math.E, IBUBoilTimeCurveFit * h.time)) / 4.15;
-                    Util = fG * fT;
-                    currentRecipe.ibu += (float)(((h.amount * h.hop.aau) * Util * 74.89) / IntoFermenterVolume);
-                }
-            }
-
-            //Final Gravity Estimate based off of the average of the attenuations of the added yeasts
-            int yeastCount = 0;
-            float attenuationTotal = 0;
-            foreach (yeastlist y in currentRecipe.yeasts)
-            {
-                yeastCount += 1;
-                attenuationTotal += y.yeast.attenuation;
-            }
-
-            float finalAttenuation = attenuationTotal / yeastCount;
-            currentRecipe.fg = 1 + (((currentRecipe.og - 1) * 1000) * ((100 - finalAttenuation) / 100)) / 1000;
-
-            //calculate ABV
-            currentRecipe.abv = (float)((currentRecipe.og - currentRecipe.fg) * 131.25);
-            if (currentRecipe.abv > 10)
-            {
-                currentRecipe.abv = (float)((76.08 * (currentRecipe.og - currentRecipe.fg) / (1.775 - currentRecipe.og)) * (currentRecipe.fg / 0.794));
-            }
-            currentRecipe.srm = (float)(1.4922 * (Math.Pow(currentRecipe.srm / IntoFermenterVolume, 0.69)));
-
-
-            beerStats.PPGPoints = (float)PPGCalc;
-            //Calculates adjusted PPG not currently returned.
-            PPGCalc = PPGCalc * KitEfficiency;
-            beerStats.CurrentOG = currentRecipe.og;
-            beerStats.CurrentFG = currentRecipe.fg;
-            beerStats.SRM = currentRecipe.srm;
-            beerStats.IBU = currentRecipe.ibu;
-            beerStats.CurrentABV = currentRecipe.abv;
-            beerStats.adjustedPPGPoints = (float)PPGCalc;
-            return beerStats;
-        }
+      //  public static BeerStats calculateStatistics(recipe2 currentRecipe, double IntoFermenterVolume, double IBUBoilTimeCurveFit, double KitEfficiency)
+      //  {
+      //      BeerStats beerStats = new BeerStats();
+      //      double PPGCalc = 0;
+      //      currentRecipe.srm = 0;
+      //      currentRecipe.ibu = 0;
+      //
+      //      //IBU Math Variables
+      //      double fG = 0;
+      //      double fT = 0;
+      //      double Util = 0;
+      //
+      //      int i = 0;
+      //      foreach (fermentablelist f in currentRecipe.fermentables)
+      //      {
+      //          PPGCalc += f.fermentable.ppg * f.weight;
+      //          currentRecipe.srm += f.fermentable.color * f.weight;
+      //      }
+      //      currentRecipe.og = (float)(1 + (PPGCalc / IntoFermenterVolume) / 1000);
+      //
+      //      foreach (hoplist h in currentRecipe.hops)
+      //      {
+      //          if (h.type == "Boil")
+      //          {
+      //              fG = 1.65 * (Math.Pow(0.000125, (currentRecipe.og - 1)));
+      //              fT = (1 - Math.Pow(Math.E, IBUBoilTimeCurveFit * h.time)) / 4.15;
+      //              Util = fG * fT;
+      //              currentRecipe.ibu += (float)(((h.amount * h.hop.aau) * Util * 74.89) / IntoFermenterVolume);
+      //          }
+      //      }
+      //
+      //      //Final Gravity Estimate based off of the average of the attenuations of the added yeasts
+      //      int yeastCount = 0;
+      //      float attenuationTotal = 0;
+      //      foreach (yeastlist y in currentRecipe.yeasts)
+      //      {
+      //          yeastCount += 1;
+      //          attenuationTotal += y.yeast.attenuation;
+      //      }
+      //
+      //      float finalAttenuation = attenuationTotal / yeastCount;
+      //      currentRecipe.fg = 1 + (((currentRecipe.og - 1) * 1000) * ((100 - finalAttenuation) / 100)) / 1000;
+      //
+      //      //calculate ABV
+      //      currentRecipe.abv = (float)((currentRecipe.og - currentRecipe.fg) * 131.25);
+      //      if (currentRecipe.abv > 10)
+      //      {
+      //          currentRecipe.abv = (float)((76.08 * (currentRecipe.og - currentRecipe.fg) / (1.775 - currentRecipe.og)) * (currentRecipe.fg / 0.794));
+      //      }
+      //      currentRecipe.srm = (float)(1.4922 * (Math.Pow(currentRecipe.srm / IntoFermenterVolume, 0.69)));
+      //
+      //
+      //      beerStats.PPGPoints = (float)PPGCalc;
+      //      //Calculates adjusted PPG not currently returned.
+      //      PPGCalc = PPGCalc * KitEfficiency;
+      //      beerStats.CurrentOG = currentRecipe.og;
+      //      beerStats.CurrentFG = currentRecipe.fg;
+      //      beerStats.SRM = currentRecipe.srm;
+      //      beerStats.IBU = currentRecipe.ibu;
+      //      beerStats.CurrentABV = currentRecipe.abv;
+      //      beerStats.adjustedPPGPoints = (float)PPGCalc;
+      //      return beerStats;
+      //  }
 
         public static string srmLookup(float srm)
         {

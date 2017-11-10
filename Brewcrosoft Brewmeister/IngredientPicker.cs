@@ -64,16 +64,16 @@ namespace Brewcrosoft_Brewmeister
             switch (versionName)
             {
                 case "Hops":
-                    selectedKey = hopList[IngredientGrid.CurrentCell.RowIndex].id;
+                    selectedKey = hopList[IngredientGrid.CurrentCell.RowIndex].idString;
                     break;
                 case "Malts":
-                    selectedKey = fermentableList[IngredientGrid.CurrentCell.RowIndex].id;
+                    selectedKey = fermentableList[IngredientGrid.CurrentCell.RowIndex].idString;
                     break;
                 case "Yeasts":
-                    selectedKey = yeastList[IngredientGrid.CurrentCell.RowIndex].id;
+                    selectedKey = yeastList[IngredientGrid.CurrentCell.RowIndex].idString;
                     break;
                 case "Adjuncts":
-                    selectedKey = adjunctList[IngredientGrid.CurrentCell.RowIndex].id;
+                    selectedKey = adjunctList[IngredientGrid.CurrentCell.RowIndex].idString;
                     break;
                 case "Style":
                     selectedKey = styleList[IngredientGrid.CurrentCell.RowIndex].id;
@@ -165,13 +165,13 @@ namespace Brewcrosoft_Brewmeister
                 switch (versionName)
             {
                 case "Hops":
-                        selectedKey = hopList[IngredientGrid.CurrentRow.Index].id;
+                        selectedKey = hopList[IngredientGrid.CurrentRow.Index].idString;
                     break;
                 case "Malts":
-                        selectedKey = fermentableList[IngredientGrid.CurrentRow.Index].id;
+                        selectedKey = fermentableList[IngredientGrid.CurrentRow.Index].idString;
                         break;
                     case "Adjuncts":
-                        selectedKey = adjunctList[IngredientGrid.CurrentRow.Index].id;
+                        selectedKey = adjunctList[IngredientGrid.CurrentRow.Index].idString;
                         break;
             }
             }

@@ -51,13 +51,13 @@ namespace Brewcrosoft_Brewmeister
             BeerDescriptionBox.Enabled = false;
 
             //Set the statistical information
-            currentRecipe.beerStatistics.PPGPoints = 0;
-            currentRecipe.beerStatistics.SRM = 0;
-            currentRecipe.beerStatistics.CurrentOG = 0;
-            currentRecipe.beerStatistics.CurrentFG = 0;
-            currentRecipe.beerStatistics.CurrentABV = 0;
-            currentRecipe.beerStatistics.KitEfficiency = 0.70;//for now....
-            currentRecipe.beerStatistics.IntoFermenterVolume = 5;//for now...
+          //  currentRecipe.beerStatistics.PPGPoints = 0;
+          //  currentRecipe.beerStatistics.SRM = 0;
+          //  currentRecipe.beerStatistics.CurrentOG = 0;
+          //  currentRecipe.beerStatistics.CurrentFG = 0;
+          //  currentRecipe.beerStatistics.CurrentABV = 0;
+          //  currentRecipe.beerStatistics.KitEfficiency = 0.70;//for now....
+          //  currentRecipe.beerStatistics.IntoFermenterVolume = 5;//for now...
 
 
             RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister");
@@ -109,13 +109,13 @@ namespace Brewcrosoft_Brewmeister
             var result = recipemaker.ShowDialog();
             if (result == DialogResult.OK)
             {
-                currentRecipe.beerStatistics.PPGPoints = recipemaker.PPGPoints;
-                currentRecipe.beerStatistics.SRM = recipemaker.SRM;
-                currentRecipe.beerStatistics.CurrentOG = recipemaker.CurrentOG;
-                currentRecipe.beerStatistics.CurrentFG = recipemaker.CurrentFG;
-                currentRecipe.beerStatistics.CurrentABV = recipemaker.CurrentABV;
-                currentRecipe.beerStatistics.KitEfficiency = recipemaker.KitEfficiency;
-                currentRecipe.beerStatistics.IntoFermenterVolume = recipemaker.IntoFermenterVolume;
+              //  currentRecipe.beerStatistics.PPGPoints = recipemaker.PPGPoints;
+              //  currentRecipe.beerStatistics.SRM = recipemaker.SRM;
+              //  currentRecipe.beerStatistics.CurrentOG = recipemaker.CurrentOG;
+              //  currentRecipe.beerStatistics.CurrentFG = recipemaker.CurrentFG;
+              //  currentRecipe.beerStatistics.CurrentABV = recipemaker.CurrentABV;
+              //  currentRecipe.beerStatistics.KitEfficiency = recipemaker.KitEfficiency;
+              //  currentRecipe.beerStatistics.IntoFermenterVolume = recipemaker.IntoFermenterVolume;
             }
         }
 
@@ -136,7 +136,7 @@ namespace Brewcrosoft_Brewmeister
                     newRecipe.style = newBeer.BeerStyle;
                     newRecipe.description = newBeer.BeerDescription;
                     APIHandler handler = new APIHandler();
-                    handler.postRecipe(newRecipe);
+                   // handler.postRecipe(newRecipe);
                 }
             }
         }
@@ -153,13 +153,13 @@ namespace Brewcrosoft_Brewmeister
             String[] linesFromFile;
             OpenFileDialog OpenFileDialog1 = new OpenFileDialog();
 
-            currentRecipe.beerStatistics.PPGPoints = 0;
-            currentRecipe.beerStatistics.SRM = 0;
-            currentRecipe.beerStatistics.CurrentOG = 0;
-            currentRecipe.beerStatistics.CurrentFG = 0;
-            currentRecipe.beerStatistics.CurrentABV = 0;
-            currentRecipe.beerStatistics.KitEfficiency = 0.70;//for now....
-            currentRecipe.beerStatistics.IntoFermenterVolume = 5;//for now...
+          //  currentRecipe.beerStatistics.PPGPoints = 0;
+          //  currentRecipe.beerStatistics.SRM = 0;
+          //  currentRecipe.beerStatistics.CurrentOG = 0;
+          //  currentRecipe.beerStatistics.CurrentFG = 0;
+          //  currentRecipe.beerStatistics.CurrentABV = 0;
+          //  currentRecipe.beerStatistics.KitEfficiency = 0.70;//for now....
+          //  currentRecipe.beerStatistics.IntoFermenterVolume = 5;//for now...
             
                         RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister", true);
                         if (adsfa != null)

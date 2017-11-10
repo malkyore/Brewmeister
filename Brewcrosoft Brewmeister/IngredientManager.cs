@@ -16,6 +16,7 @@ namespace Brewcrosoft_Brewmeister
     public partial class IngredientManager : Form
     {
         public string dataurl;
+        private APIHandler handler = new APIHandler();
         public IngredientManager()
         {
             InitializeComponent();
@@ -195,8 +196,8 @@ namespace Brewcrosoft_Brewmeister
 
         private void addHopButton_Click(object sender, EventArgs e)
         {
-            var client = new RestClient(dataurl);
-            var request = new RestRequest("/hop/", Method.POST);
+            var client = new RestClient(handler.GetDataProvider());
+            var request = new RestRequest("/beernet/hop/", Method.POST);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("Content-type", "application/json");
             request.AddJsonBody(
@@ -232,15 +233,10 @@ namespace Brewcrosoft_Brewmeister
 
         private void deleteHopButton_Click(object sender, EventArgs e)
         {
-            var client = new RestClient(dataurl);
-            var request = new RestRequest("/hop/", Method.DELETE);
+            var client = new RestClient(handler.GetDataProvider());
+            var request = new RestRequest("/beernet/hop/" + hopGrid.SelectedRows[0].Cells[3].Value , Method.DELETE);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("Content-type", "application/json");
-            request.AddJsonBody(
-            new
-            {
-                id = hopGrid.SelectedRows[0].Cells[2].Value
-            }); // AddJsonBody serializes the object automatically
 
             IRestResponse response = client.Execute(request);
             refreshGrids();
@@ -248,19 +244,17 @@ namespace Brewcrosoft_Brewmeister
 
         private void addMaltButton_Click(object sender, EventArgs e)
         {
-            var client = new RestClient(dataurl);
-            var request = new RestRequest("/fermentables/", Method.POST);
+            var client = new RestClient(handler.GetDataProvider());
+            var request = new RestRequest("/beernet/fermentable/", Method.POST);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("Content-type", "application/json");
-            request.AddJsonBody(
-            new
-            {
-                name = maltNameBox.Text,
-                ppg = maltPPGBox.Text,
-                color = maltColorBox.Text,
-                type = maltTypeBox.Text,
-                maltster = maltMaltsterBox.Text
-            }); // AddJsonBody serializes the object automatically
+            fermentable2 currentFermentable = new fermentable2();
+            currentFermentable.name = maltNameBox.Text;
+            currentFermentable.ppg = float.Parse(maltPPGBox.Text);
+            currentFermentable.color = float.Parse(maltColorBox.Text);
+            currentFermentable.type = maltTypeBox.Text;
+            currentFermentable.maltster = maltMaltsterBox.Text;
+            request.AddJsonBody(currentFermentable); // AddJsonBody serializes the object automatically
 
             IRestResponse response = client.Execute(request);
             refreshGrids();
@@ -268,24 +262,18 @@ namespace Brewcrosoft_Brewmeister
 
         private void DeleteMaltButton_Click(object sender, EventArgs e)
         {
-            var client = new RestClient(dataurl);
-            var request = new RestRequest("/fermentables/", Method.DELETE);
+            var client = new RestClient(handler.GetDataProvider());
+            var request = new RestRequest("/beernet/fermentable/" + maltGrid.SelectedRows[0].Cells[6].Value, Method.DELETE);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("Content-type", "application/json");
-            request.AddJsonBody(
-            new
-            {
-                id = maltGrid.SelectedRows[0].Cells[5].Value
-            }); // AddJsonBody serializes the object automatically
-
             IRestResponse response = client.Execute(request);
             refreshGrids();
         }
 
         private void addYeastButton_Click(object sender, EventArgs e)
         {
-            var client = new RestClient(dataurl);
-            var request = new RestRequest("/yeast/", Method.POST);
+            var client = new RestClient(handler.GetDataProvider());
+            var request = new RestRequest("/beernet/yeast/", Method.POST);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("Content-type", "application/json");
             request.AddJsonBody(
@@ -302,16 +290,10 @@ namespace Brewcrosoft_Brewmeister
 
         private void deleteYeastButton_Click(object sender, EventArgs e)
         {
-            var client = new RestClient(dataurl);
-            var request = new RestRequest("/yeast/", Method.DELETE);
+            var client = new RestClient(handler.GetDataProvider());
+            var request = new RestRequest("/beernet/yeast/" + yeastGrid.SelectedRows[0].Cells[4].Value, Method.DELETE);
             request.RequestFormat = DataFormat.Json;
             request.AddHeader("Content-type", "application/json");
-            request.AddJsonBody(
-            new
-            {
-                id = yeastGrid.SelectedRows[0].Cells[3].Value
-            }); // AddJsonBody serializes the object automatically
-
             IRestResponse response = client.Execute(request);
             refreshGrids();
         }

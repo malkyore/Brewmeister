@@ -100,8 +100,44 @@ namespace Brewcrosoft_Brewmeister.Data
         }
     }
 
+    public class RecipeStatistics
+    {
+        public double abv;
+        public double ibu;
+        public double fg;
+        public double og;
+        public double srm;
+    }
+
+    public class RecipeParameters
+    {
+        public string ibuCalcType;
+        public string fermentableCalcType;
+        public double ibuBoilTimeCurveFit;
+        public double intoFermenterVolume;
+    }
+
+    public class id
+    {
+        public string timestamp;
+        public string machine;
+        public string pid;
+        public string increment;
+        public string creationTime;
+    }
+
+    public class recipeResponse
+    {
+        public RecipeStatistics recipeStats;
+        public string idString;
+        string success;
+        string message;
+    }
+
     public class recipe2
     {
+        public id id;
+        public string idString;
         public string name;
         public string style;
         public string styleID;
@@ -111,15 +147,23 @@ namespace Brewcrosoft_Brewmeister.Data
         public float fg;
         public float og;
         public float srm;
-        public string id;
+       // public string id;
         public string test;
 
-        public List<yeastlist> yeasts = new List<yeastlist>();
+        public List<yeast2> yeasts = new List<yeast2>();
         public List<fermentablelist> fermentables = new List<fermentablelist>();
         public List<adjunctList> adjuncts = new List<adjunctList>();
         public List<hoplist> hops = new List<hoplist>();
 
-        public BeerStats beerStatistics = new BeerStats();
+      //  public BeerStats beerStatistics = new BeerStats();
+
+        
+        public RecipeStatistics recipeStats { get; set; }
+        public RecipeParameters recipeParameters { get; set; }
+        public double version { get; set; }
+        public string parentRecipe { get; set; }
+        public string clonedFrom { get; set; }
+        public string hidden { get; set; }
 
     }
 
@@ -138,27 +182,28 @@ namespace Brewcrosoft_Brewmeister.Data
 
     public class yeastlist
     {
-        public string recipeID;
+       // public string recipeID;
         public string yeastID;
-        public string ID;
+     //   public string ID;
         public yeast2 yeast = new yeast2();
     }
 
     public class yeast2
     {
+        public id id { get; set; }
         public string lab { get; set; }
         public string name { get; set; }
         public float attenuation { get; set; }
-        public string id { get; set; }
+        public string idString { get; set; }
     }
 
     public class fermentablelist
     {
-        public string recipeID;
+        //public string recipeID;
         public string fermentableID;
         public string use;
         public float weight;
-        public string id;
+       // public string id;
         public fermentable2 fermentable = new fermentable2();
     }
 
@@ -169,36 +214,36 @@ namespace Brewcrosoft_Brewmeister.Data
         public float color { get; set; }
         public string type { get; set; }
         public string maltster { get; set; }
-        public string id { get; set; }
+        public string idString { get; set; }
     }
 
     public class adjunctList
     {
-        public string recipeID;
+     //   public string recipeID;
         public string adjunctID;
         public float amount;
         public string unit;
         public float time;
         public string timeUnit;
         public string type;
-        public string id;
+     //   public string id;
         public adjunct2 adjunct = new adjunct2();
     }
 
     public class adjunct2
     {
         public string name;
-        public string id;
+        public string idString;
     }
 
     public class hoplist
     {
-        public string recipeID;
+     //   public string recipeID;
         public string hopID;
         public float amount;
         public string type;
         public float time;
-        public string id;
+       // public string id;
         public hop2 hop = new hop2();
     }
 
@@ -206,6 +251,6 @@ namespace Brewcrosoft_Brewmeister.Data
     {
         public string name { get; set; }
         public float aau { get; set; }
-        public string id { get; set; }
+        public string idString { get; set; }
     }
 }

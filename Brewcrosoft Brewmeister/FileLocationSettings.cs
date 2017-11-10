@@ -21,6 +21,16 @@ namespace Brewcrosoft_Brewmeister
             {
                 RecipeLocationBox.Text = "" + adsfa.GetValue("RecipeFileLocation");
                 IngredientLocationBox.Text = "" + adsfa.GetValue("IngredientFileLocation");
+                DeploydBox.Text = "" + adsfa.GetValue("DeploydAddress");
+                BeerNetBox.Text = "" + adsfa.GetValue("BeerNetAddress");
+                if(adsfa.GetValue("DataProvider").ToString() == "True")
+                {
+                    beerNetRadio.Checked = true;
+                }
+                else
+                {
+                    deploydRadio.Checked = true;
+                }
                 adsfa.Close();
             }
             
@@ -49,21 +59,39 @@ namespace Brewcrosoft_Brewmeister
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister", true);
-            if (adsfa != null)
+            if (beerNetRadio.Checked != true && deploydRadio.Checked != true)
             {
-                adsfa.SetValue("RecipeFileLocation", RecipeLocationBox.Text);
-                adsfa.SetValue("IngredientFileLocation", IngredientLocationBox.Text);
+                MessageBox.Show("Select a data provider");
             }
             else
             {
-                adsfa = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE/Brewmeister");
-                adsfa.SetValue("RecipeFileLocation", RecipeLocationBox.Text);
-                adsfa.SetValue("IngredientFileLocation", IngredientLocationBox.Text);
+                RegistryKey adsfa = Registry.CurrentUser.OpenSubKey("SOFTWARE/Brewmeister", true);
+                if (adsfa != null)
+                {
+                    adsfa.SetValue("RecipeFileLocation", RecipeLocationBox.Text);
+                    adsfa.SetValue("IngredientFileLocation", IngredientLocationBox.Text);
+                    adsfa.SetValue("DeploydAddress", DeploydBox.Text);
+                    adsfa.SetValue("BeerNetAddress", BeerNetBox.Text);
+                    adsfa.SetValue("DataProvider", beerNetRadio.Checked);
+                }
+                else
+                {
+                    adsfa = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("SOFTWARE/Brewmeister");
+                    adsfa.SetValue("RecipeFileLocation", RecipeLocationBox.Text);
+                    adsfa.SetValue("IngredientFileLocation", IngredientLocationBox.Text);
+                    adsfa.SetValue("DeploydAddress", DeploydBox.Text);
+                    adsfa.SetValue("BeerNetAddress", BeerNetBox.Text);
+                    adsfa.SetValue("DataProvider", beerNetRadio.Checked);
+                }
+                adsfa.Close();
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
-            adsfa.Close();
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+        }
+
+        private void radioButton1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

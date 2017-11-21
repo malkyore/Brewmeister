@@ -76,7 +76,7 @@ namespace Brewcrosoft_Brewmeister
                     selectedKey = adjunctList[IngredientGrid.CurrentCell.RowIndex].idString;
                     break;
                 case "Style":
-                    selectedKey = styleList[IngredientGrid.CurrentCell.RowIndex].id;
+                    selectedKey = styleList[IngredientGrid.CurrentCell.RowIndex].idString;
                     break;
 
             }
@@ -151,7 +151,7 @@ namespace Brewcrosoft_Brewmeister
                 case "Style":
                     foreach (style element in styleList)
                     {
-                        IngredientGrid.Rows.Add(styleList[i].name, styleList[i].type);
+                        IngredientGrid.Rows.Add(styleList[i].name, styleList[i].category);
                         i++;
                     }
                     break;

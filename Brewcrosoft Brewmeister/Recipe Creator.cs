@@ -181,9 +181,9 @@ namespace Brewcrosoft_Brewmeister
                 adsfa.Close();
             }
 
-            populateGrids();
-            RefreshStatistics();
-            updateStyleSliders();
+          //  populateGrids();
+          //  RefreshStatistics();
+          //  updateStyleSliders();
         }
 
         private void viewRecipesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -223,6 +223,14 @@ namespace Brewcrosoft_Brewmeister
             {
                 BeerNameBox.Text = currentRecipe.name;
                 descriptionBox.Text = currentRecipe.description;
+                try
+                {
+                    BeerStyleLabel.Text = currentRecipe.style;
+                }
+                catch(Exception e)
+                {
+
+                }
             }
             
 
@@ -321,26 +329,28 @@ namespace Brewcrosoft_Brewmeister
                 //OG Stuff
                 //Style set to IPA until the new API is updated with Style endpoint
                 style currentStyle = new style();//handler.getStyle(currentRecipe.styleID);
-                currentStyle.minOG = 1.056F;
-                currentStyle.maxOG = 1.075F;
-                currentStyle.minFG = 1.01F;
-                currentStyle.maxFG = 1.018F;
-                currentStyle.minABV = 5.5F;
-                currentStyle.maxABV = 7.5F;
-                currentStyle.minIBU = 40F;
-                currentStyle.maxIBU = 70F;
-                currentStyle.minSRM = 6;
-                currentStyle.maxSRM = 15;
-                currentStyle.minCarb = 2.2F;
-                currentStyle.maxCarb = 2.7F;
+                //currentStyle.minOG = 1.056F;
+                //currentStyle.maxOG = 1.075F;
+                //currentStyle.minFG = 1.01F;
+                //currentStyle.maxFG = 1.018F;
+                //currentStyle.minABV = 5.5F;
+                //currentStyle.maxABV = 7.5F;
+                //currentStyle.minIBU = 40F;
+                //currentStyle.maxIBU = 70F;
+                //currentStyle.minColor = 6;
+                //currentStyle.maxColor = 15;
+                //currentStyle.minCarb = 2.2F;
+                //currentStyle.maxCarb = 2.7F;
+                currentStyle = handler.getStyle(currentRecipe.styleID);
                 //Temporarily set this to IPA until we get Style into the new API
-                BeerStyleLabel.Text = "American IPA";
+                //BeerStyleLabel.Text = "American IPA";
+                BeerStyleLabel.Text = currentStyle.name;
 
                 minOGLabel.Text = "" + currentStyle.minOG;
                 maxOGLabel.Text = "" + currentStyle.maxOG;
                 ogSlider.Minimum = 0;
                 ogSlider.Maximum = 100;
-                float OGSliderAdjustmentFactor = 100 / (currentStyle.maxOG-currentStyle.minOG);
+                double OGSliderAdjustmentFactor = 100 / (currentStyle.maxOG-currentStyle.minOG);
                 int currentOGSliderPosition = (int)((currentRecipe.recipeStats.og-currentStyle.minOG)*OGSliderAdjustmentFactor);
                 if (currentOGSliderPosition > 100)
                     currentOGSliderPosition = 100;
@@ -353,7 +363,7 @@ namespace Brewcrosoft_Brewmeister
                 maxFGLabel.Text = "" + currentStyle.maxFG;
                 fgSlider.Minimum = 0;
                 fgSlider.Maximum = 100;
-                float FGSliderAdjustmentFactor = 100 / (currentStyle.maxFG - currentStyle.minFG);
+                double FGSliderAdjustmentFactor = 100 / (currentStyle.maxFG - currentStyle.minFG);
                 int currentFGSliderPosition = (int)((currentRecipe.recipeStats.fg - currentStyle.minFG) * FGSliderAdjustmentFactor);
                 if (currentFGSliderPosition > 100)
                     currentFGSliderPosition = 100;
@@ -366,7 +376,7 @@ namespace Brewcrosoft_Brewmeister
                 maxIBULabel.Text = "" + currentStyle.maxIBU;
                 ibuSlider.Minimum = 0;
                 ibuSlider.Maximum = 100;
-                float IBUSliderAdjustmentFactor = 100 / (currentStyle.maxIBU - currentStyle.minIBU);
+                double IBUSliderAdjustmentFactor = 100 / (currentStyle.maxIBU - currentStyle.minIBU);
                 int currentIBUSliderPosition = (int)((currentRecipe.recipeStats.ibu - currentStyle.minIBU) * IBUSliderAdjustmentFactor);
                 if (currentIBUSliderPosition > 100)
                     currentIBUSliderPosition = 100;
@@ -375,12 +385,12 @@ namespace Brewcrosoft_Brewmeister
                 ibuSlider.Value = currentIBUSliderPosition;
                 ibuSlider.Refresh();
                 //SRM Stuff
-                minSRMLabel.Text = "" + currentStyle.minSRM;
-                maxSRMLabel.Text = "" + currentStyle.maxSRM;
+                minSRMLabel.Text = "" + currentStyle.minColor;
+                maxSRMLabel.Text = "" + currentStyle.maxColor;
                 srmSlider.Minimum = 0;
                 srmSlider.Maximum = 100;
-                float SRMSliderAdjustmentFactor = 100 / (currentStyle.maxSRM - currentStyle.minSRM);
-                int currentSRMSliderPosition = (int)((currentRecipe.recipeStats.srm - currentStyle.minSRM) * SRMSliderAdjustmentFactor);
+                double SRMSliderAdjustmentFactor = 100 / (currentStyle.maxColor - currentStyle.minColor);
+                int currentSRMSliderPosition = (int)((currentRecipe.recipeStats.srm - currentStyle.minColor) * SRMSliderAdjustmentFactor);
                 if (currentSRMSliderPosition > 100)
                     currentSRMSliderPosition = 100;
                 else if (currentSRMSliderPosition < 0)
@@ -392,7 +402,7 @@ namespace Brewcrosoft_Brewmeister
                 maxABVLabel.Text = "" + currentStyle.maxABV;
                 abvSlider.Minimum = 0;
                 abvSlider.Maximum = 100;
-                float ABVSliderAdjustmentFactor = 100 / (currentStyle.maxABV - currentStyle.minABV);
+                double ABVSliderAdjustmentFactor = 100 / (currentStyle.maxABV - currentStyle.minABV);
                 int currentABVSliderPosition = (int)((currentRecipe.recipeStats.abv - currentStyle.minABV) * ABVSliderAdjustmentFactor);
                 if (currentABVSliderPosition > 100)
                     currentABVSliderPosition = 100;
@@ -404,7 +414,21 @@ namespace Brewcrosoft_Brewmeister
             }
             catch (Exception e)
             {
-
+                srmSlider.Value = 0;
+                ibuSlider.Value = 0;
+                srmSlider.Value = 0;
+                fgSlider.Value = 0;
+                ogSlider.Value = 0;
+                minOGLabel.Text = "" + 000;
+                maxOGLabel.Text = "      " + 000;
+                minFGLabel.Text = "" + 000;
+                maxFGLabel.Text = "      " + 000;
+                minSRMLabel.Text = "" + 000;
+                maxSRMLabel.Text = "    " + 000;
+                minABVLabel.Text = "" + 000;
+                maxABVLabel.Text = "    " + 000;
+                minIBULabel.Text = "" + 000;
+                maxIBULabel.Text = "    " + 000;
             }
         }
         /*
@@ -457,7 +481,7 @@ namespace Brewcrosoft_Brewmeister
          * */
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            bool reload = false;
+           // bool reload = false;
             APIHandler handler = new APIHandler();
             currentRecipe.name = BeerNameBox.Text;
             currentRecipe.description = descriptionBox.Text;
@@ -467,33 +491,33 @@ namespace Brewcrosoft_Brewmeister
             currentRecipe.idString = resp.idString;
             RefreshStatistics();
             updateStyleSliders();
-            foreach (hoplist h in currentRecipe.hops)
-            {
-               // handler.postHopAddition(h);
-            }
-            foreach(fermentablelist f in currentRecipe.fermentables)
-            {
-              //  string response = handler.postFermentableAddition(f);
-            //    if(response == "false")
-            //    {
-            //        reload = true;
-            //    }
-            }
-            foreach (yeast2 y in currentRecipe.yeasts)
-            {
-               // handler.postYeastAddition(y);
-            }
-            foreach (adjunctList a in currentRecipe.adjuncts)
-            {
-             //   handler.postAdjunctAddition(a);
-            }
+          //  foreach (hoplist h in currentRecipe.hops)
+          //  {
+          //     // handler.postHopAddition(h);
+          //  }
+          //  foreach(fermentablelist f in currentRecipe.fermentables)
+          //  {
+          //    //  string response = handler.postFermentableAddition(f);
+          //  //    if(response == "false")
+          //  //    {
+          //  //        reload = true;
+          //  //    }
+          //  }
+          //  foreach (yeast2 y in currentRecipe.yeasts)
+          //  {
+          //     // handler.postYeastAddition(y);
+          //  }
+          //  foreach (adjunctList a in currentRecipe.adjuncts)
+          //  {
+          //   //   handler.postAdjunctAddition(a);
+          //  }
            // handler.postRecipe(currentRecipe);
-            if(reload)
-            {
-               // currentRecipe = handler.loadRecipe(currentRecipe.id);
-                populateGrids();
-               // RefreshStatistics();
-            }
+          //  if(reload)
+          //  {
+          //     // currentRecipe = handler.loadRecipe(currentRecipe.id);
+          //      populateGrids();
+          //     // RefreshStatistics();
+          //  }
         }
 
         #endregion
@@ -780,17 +804,17 @@ namespace Brewcrosoft_Brewmeister
 
         private void BeerStyleLabel_Click(object sender, EventArgs e)
         {
-         //   APIHandler handler = new APIHandler();
-         //   using (var MaltDialog = new IngredientPicker("Style"))
-         //   {
-         //       var result = MaltDialog.ShowDialog();
-         //       if (result == DialogResult.OK)
-         //       {
-         //           currentRecipe.styleID = MaltDialog.selectedKey;
-         //           currentRecipe.style = handler.getStyle(MaltDialog.selectedKey).name;
-         //           populateGrids();
-         //       }
-         //   }
+            APIHandler handler = new APIHandler();
+            using (var MaltDialog = new IngredientPicker("Style"))
+            {
+                var result = MaltDialog.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    currentRecipe.styleID = MaltDialog.selectedKey;
+                    currentRecipe.style = handler.getStyle(MaltDialog.selectedKey).name;
+                    populateGrids();
+                }
+            }
         }
 
         private void aPILocationHandlerToolStripMenuItem_Click(object sender, EventArgs e)

@@ -19,22 +19,26 @@ namespace Brewcrosoft_Brewmeister.Data
 
     public class style
     {
-        public string id;
+        public id id;
+        public string idString;
         public string name;
-        public string type;
+        public string category;
         public string description;
-        public float minOG;
-        public float maxOG;
-        public float minFG;
-        public float maxFG;
-        public float minIBU;
-        public float maxIBU;
-        public float minABV;
-        public float maxABV;
-        public float minSRM;
-        public float maxSRM;
-        public float minCarb;
-        public float maxCarb;
+        public string profile;
+        public string ingredients;
+        public string examples;
+        public double minOG;
+        public double maxOG;
+        public double minFG;
+        public double maxFG;
+        public double minIBU;
+        public double maxIBU;
+        public double minABV;
+        public double maxABV;
+        public double minColor;
+        public double maxColor;
+        public double minCarb;
+        public double maxCarb;
     }
 
     public class fermentable
